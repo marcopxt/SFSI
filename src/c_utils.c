@@ -47,15 +47,19 @@ SEXP updatebeta(SEXP n, SEXP XtX, SEXP Xty, SEXP q, SEXP lambda, SEXP a, SEXP ma
     if(isFloat){
       PROTECT(XtX=AS_INTEGER(XtX));
       pXtX1=FLOAT(XtX);
+      pXtX2=(double *) R_alloc(0, sizeof(double)); // will not be used
 
       PROTECT(Xty=AS_INTEGER(Xty));
       pXty1=FLOAT(Xty);
+      pXty2=(double *) R_alloc(0, sizeof(double)); // will not be used
     }else{
       PROTECT(XtX=AS_NUMERIC(XtX));
       pXtX2=NUMERIC_POINTER(XtX);
+      pXtX1=(float *) R_alloc(0, sizeof(float)); // will not be used
 
       PROTECT(Xty=AS_NUMERIC(Xty));
       pXty2=NUMERIC_POINTER(Xty);
+      pXty1=(float *) R_alloc(0, sizeof(float)); // will not be used
 	  }
 
     PROTECT(lambda=AS_NUMERIC(lambda));
