@@ -1,3 +1,14 @@
+# Version 1.0.0 (xx-xx-2021)
+
+## New features
+
+  - Function 'solveEN' allows early stop when a user-provided number of non-zero predictors at a given value of lambda is reached (argument 'maxDF')
+
+## Bug fixes
+
+  - Function 'fitBLUP' performs the new checking varU <= 2*var(y) to declare a possible error if FALSE
+
+
 # Version 0.4.0 (May-12-2021)
 
 ## New features
@@ -18,3 +29,4 @@
 ## Features
 
 - First released version
+- Function 'solveMixed' (from GitHub version) was renamed to 'fitBLUP'
