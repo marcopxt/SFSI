@@ -3,9 +3,10 @@
 \alias{solveEN}
 \title{Coordinate Descent algorithm to solve Elastic-Net-type problems}
 \usage{
-solveEN(P, v, alpha = 1, lambda = NULL, nLambda = 100, 
-   minLambda = .Machine$double.eps^0.5, scale = TRUE, 
-   tol = 1e-05, maxIter = 1000, verbose = FALSE)
+solveEN(P, v, alpha = 1, lambda = NULL, 
+        nLambda = 100, minLambda = .Machine$double.eps^0.5,
+        maxDF = NULL, scale = TRUE, tol = 1e-05, 
+        maxIter = 1000, verbose = FALSE)
 }
 \arguments{
 \item{P}{(numeric matrix) Variance-covariance matrix of predictors. It can be of the "float32" type as per the 'float' R-package}
@@ -29,6 +30,9 @@ taken from the diagonal of \code{P}}
 \item{tol}{(numeric) Maximum error between two consecutive solutions of the CD algorithm to declare convergence}
 
 \item{maxIter}{(integer) Maximum number of iterations to run the CD algorithm at each lambda step before convergence is reached}
+
+\item{maxDF}{(integer) Maximum number of non-zero coefficients in the last solution.
+Default \code{maxDF=NULL} will calculate solutions for the entire lambda sequence}
 
 \item{verbose}{\code{TRUE} or \code{FALSE} to whether printing each CD step}
 }

@@ -18,8 +18,8 @@ lars2(P, v, method = c("LAR", "LAR-LASSO"), maxDF = NULL,
 }
 Default is \code{method='LAR'}}
 
-\item{maxDF}{(integer) Maximum number of predictors in the last LARS solution.
-Default \code{maxDF=NULL} will calculate solution for all the predictors}
+\item{maxDF}{(integer) Maximum number of non-zero coefficients in the last LARS solution.
+Default \code{maxDF=NULL} will calculate solutions for the entire lambda sequence}
 
 \item{eps}{(numeric) An effective zero. Default is the machine precision}
 
