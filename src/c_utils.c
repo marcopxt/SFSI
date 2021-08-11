@@ -24,21 +24,23 @@
 //      maxtole:   Maximum value between two consecutive solutions for beta to be accepted for convergence
 //      maxsteps:  Number of iterations to run before the updating stops
 // ----------------------------------------------------------
-SEXP updatebeta(SEXP n, SEXP XtX, SEXP Xty, SEXP q, SEXP lambda, SEXP a, SEXP maxtole, SEXP maxsteps, SEXP echo, SEXP flagfloat)
+SEXP updatebeta(SEXP n, SEXP XtX, SEXP Xty, SEXP q, SEXP lambda, SEXP a, SEXP maxtole, SEXP maxsteps, SEXP maxDF, SEXP echo, SEXP flagfloat)
 {
     float *pXtX1, *pXty1;
     double *pXtX2, *pXty2, *plambda, alpha, maxTol, eps;
     double L1, L2, maxdiff;
-    int i, j, k, np, maxIter, iter, nlambda, verbose, isFloat;
+    int i, j, k, np, maxIter, iter, nlambda, verbose, isFloat, maxdf;
+    int *pDF;
     //int inc=1;
     double delta, bOLS, bNew;
     double *pB, *b, *currfit;
     long long pos1;
-    SEXP list, B;
+    SEXP list, DF, B;
 
     np=INTEGER_VALUE(n);
     nlambda=INTEGER_VALUE(q);
     maxIter=INTEGER_VALUE(maxsteps);
+    maxdf=INTEGER_VALUE(maxDF);
     verbose=asLogical(echo);
     alpha=NUMERIC_VALUE(a);
     maxTol=NUMERIC_VALUE(maxtole);
@@ -65,6 +67,9 @@ SEXP updatebeta(SEXP n, SEXP XtX, SEXP Xty, SEXP q, SEXP lambda, SEXP a, SEXP ma
     PROTECT(lambda=AS_NUMERIC(lambda));
     plambda=NUMERIC_POINTER(lambda);
 
+    DF = PROTECT(allocVector(INTSXP, nlambda));
+    pDF=INTEGER_POINTER(DF);
+
     B = PROTECT(allocMatrix(REALSXP, nlambda, np));
     pB=NUMERIC_POINTER(B);
 
@@ -73,6 +78,7 @@ SEXP updatebeta(SEXP n, SEXP XtX, SEXP Xty, SEXP q, SEXP lambda, SEXP a, SEXP ma
 
     memset(currfit,0, sizeof(double)*np);  // Initialize all currentfit to zero
     memset(b,0, sizeof(double)*np);  // Initialize all coefficients to zero
+    for(j=0; j<nlambda; j++) pDF[j]=np;
 
     eps = DBL_EPSILON;
 
@@ -131,20 +137,23 @@ SEXP updatebeta(SEXP n, SEXP XtX, SEXP Xty, SEXP q, SEXP lambda, SEXP a, SEXP ma
             }
         }
         //F77_NAME(dcopy)(&np, b, &inc, pB+k, &nlambda);
-        for(i=0; i<np; i++){
-          pB[k+i*nlambda]=b[i];
+        pDF[k]=0;
+        for(j=0; j<np; j++){
+          if(fabs(b[j])>eps) pDF[k]++;
+          pB[k+j*nlambda]=b[j];
         }
+        if(maxdf<np && pDF[k]>=maxdf) break;
     }
 
     // Creating a list with 1 vector elements:
-    PROTECT(list = allocVector(VECSXP, 1));
+    PROTECT(list = allocVector(VECSXP, 2));
     SET_VECTOR_ELT(list, 0, B);
+    SET_VECTOR_ELT(list, 1, DF);
 
-    UNPROTECT(5);
+    UNPROTECT(6);
 
     return(list);
 }
-
 // ----------------------------------------------------------
 // Transform a covariance matrix to a (squared) distance matrix
 // The distance between variables i and j is
