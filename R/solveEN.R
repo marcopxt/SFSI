@@ -1,9 +1,9 @@
 
-# P=XtX2; v=Xty; alpha = 1; lambda = NULL; nLambda = 100; scale = TRUE
+# P=XtX; v=Xty; alpha = 1; lambda = NULL; nLambda = 100; scale = TRUE
 # tol = 1E-5; maxIter = 1000; verbose = FALSE
 
 solveEN <- function(P, v, alpha = 1, lambda = NULL, nLambda = 100,
-    minLambda = .Machine$double.eps^0.5, scale = TRUE,
+    minLambda = .Machine$double.eps^0.5, maxDF = NULL, scale = TRUE,
     tol = 1E-5, maxIter = 1000, verbose = FALSE)
 {
     v <- as.vector(v)
@@ -32,12 +32,15 @@ solveEN <- function(P, v, alpha = 1, lambda = NULL, nLambda = 100,
       sdx <- rep(1,p)
     }
 
+    if(is.null(maxDF)) maxDF <- p
+
     if(is.null(lambda)){
       Cmax <- ifelse(alpha > .Machine$double.eps, max(abs(v)/alpha), 5)
       lambda <- exp(seq(log(Cmax),log(minLambda),length=nLambda))
     }else{
-      if(!is.vector(lambda,mode="numeric") | any(diff(lambda) >0))
+      if(length(dim(lambda))==2 | mode(lambda)!="numeric" | any(diff(lambda)>0))
         stop("Object 'lambda' must be a vector of decreasing numbers")
+      maxDF <- p
     }
     nLambda <- length(lambda)
 
@@ -46,18 +49,26 @@ solveEN <- function(P, v, alpha = 1, lambda = NULL, nLambda = 100,
     {
       beta <- .Call('updatebeta',as.integer(p),P@Data,v@Data,
                as.integer(nLambda),as.numeric(lambda),
-               as.numeric(alpha), as.numeric(tol),
-               as.integer(maxIter),verbose,isFloat)[[1]]
+               as.numeric(alpha), as.numeric(tol),as.integer(maxIter),
+               as.integer(maxDF),verbose,isFloat)
 
     }else{
       beta <- .Call('updatebeta',as.integer(p),P,as.vector(v),
-               as.integer(nLambda),as.numeric(lambda),as.numeric(alpha),
-               as.numeric(tol),as.integer(maxIter),verbose,isFloat)[[1]]
+               as.integer(nLambda),as.numeric(lambda),
+               as.numeric(alpha),as.numeric(tol),as.integer(maxIter),
+               as.integer(maxDF),verbose,isFloat)
     }
     #dyn.unload("c_utils.so")
 
+    df <- beta[[2]]
+    beta <- beta[[1]]
+
+    index <- which(df <= maxDF)
+    lambda <- lambda[index]
+    df <- df[index]
+    beta <- beta[index, ,drop=FALSE]
+
     if(scale) beta <- sweep(beta,2L,as.numeric(sdx),FUN="/")
-    df <- do.call(c,lapply(1:nrow(beta),function(i) sum(abs(beta[i,])>0)))
 
     out <- list(beta=beta,lambda=lambda,df=df)
     class(out) <- "LASSO"

@@ -151,7 +151,7 @@ backsolvet <- function(r, x, k=ncol(r))
 }
 
 #====================================================================
-# Update the lower triangular decomposition when adding a new column
+# Update the lower triangular CHOLESKY decomposition when adding a new column
 #====================================================================
 # xtx=P[inew,inew]; Xtx=as.vector(P[inew,active])
 upDateR <- function(xtx, R = NULL, Xtx, eps = .Machine$double.eps)
@@ -181,7 +181,7 @@ upDateR <- function(xtx, R = NULL, Xtx, eps = .Machine$double.eps)
 
 
 #====================================================================
-# Update the lower triangular decomposition when deleting one column
+# Update the lower triangular CHOLESKY decomposition when deleting one column
 #====================================================================
 downDateR <- function(R, k = p)
 {
@@ -410,7 +410,7 @@ dlogResLik <- function(lambda,n,c0,Uty,UtX,d)
 searchInt <- function(method,interval,n,c0,Uty,UtX,d,maxIter,tol,lower,upper,varP)
 {
   flag <- TRUE; i <- 1
-  convergence <- lambda0 <- dbar <- varU <- varE <- bHat <- NA
+  convergence <- lambda0 <- dbar <- varU <- varE <- bHat <- msg <- NA
   while(flag)
   {
     i <- i + 1
@@ -428,9 +428,11 @@ searchInt <- function(method,interval,n,c0,Uty,UtX,d,maxIter,tol,lower,upper,var
       lambda00 <- tmp$root
       if(lambda00 <= lower){
         lambda00 <- lower
+        msg <- paste0("Root varU/varE is the lower bound ",lower)
       }else{
         if(lambda00 >= upper){
           lambda00 <- upper
+          msg <- paste0("Root varU/varE is the upper bound ",upper)
         }
       }
 
@@ -443,7 +445,7 @@ searchInt <- function(method,interval,n,c0,Uty,UtX,d,maxIter,tol,lower,upper,var
       varE <- ifelse(method=="REML",ytPy/(n-c0-1),ytPy/n)
       varU <- lambda00*varE
 
-      if(varU <= (1.1)*varP){
+      if(varU <= (2)*varP){  # A quality control-like
         convergence <- tmp$iter <= maxIter
         lambda0 <-  lambda00
       }
@@ -453,7 +455,8 @@ searchInt <- function(method,interval,n,c0,Uty,UtX,d,maxIter,tol,lower,upper,var
     #cat("Interval ",i-1,"[",interval[i-1],",",interval[i],"]: root=",aa[1]," f.root=",aa[2]," prec=",aa[3],"\n")
     if(i == length(interval) | !is.na(convergence)) flag <- FALSE
   }
-  list(lambda0=lambda0,varU=varU,varE=varE,convergence=convergence,dbar=dbar,bHat=bHat)
+  list(lambda0=lambda0,varU=varU,varE=varE,convergence=convergence,
+       dbar=dbar,bHat=bHat,msg=msg)
 }
 
 #====================================================================
@@ -841,7 +844,7 @@ plotPath <- function(fm, Z=NULL, K=NULL, indexK = NULL, tst=NULL, title=NULL, ma
   |    ._____| | | |       ._____| | .__| |__.     Marco Lopez-Cruz       |
   |    |_______| |_|       |_______| |_______|     Gustavo de los Campos  |
   |                                                                       |
-  |    Sparse Family and Selection Index. Version 0.4.0 (May 12, 2021)    |
+  |    Sparse Family and Selection Index. Version 1.0.0 (Aug 10, 2021)    |
   |    Type 'citation('SFSI')' to know how to cite SFSI                   |
   |    Type 'help(package='SFSI',help_type='html')' to see help           |
   |    Type 'browseVignettes('SFSI')' to see documentation                |

@@ -1,7 +1,7 @@
 
 # X = Z = indexK = saveAt = name = subset= NULL; lambda=b=NULL
 # alpha = 1; nLambda = 100; commonLambda = TRUE; minLambda = .Machine$double.eps^0.5
-# mc.cores = 1; tol = 1E-4; maxIter = 300; verbose = TRUE; method = c("REML","ML")[1]
+# mc.cores = 1; tol = 1E-4; maxIter = 500; verbose = TRUE; method = c("REML","ML")[1]
 
 SSI <- function(y, X = NULL, b = NULL, Z = NULL, K, indexK = NULL,
          h2 = NULL, trn = seq_along(y), tst = seq_along(y),
@@ -34,7 +34,7 @@ SSI <- function(y, X = NULL, b = NULL, Z = NULL, K, indexK = NULL,
   {
     X <- model.matrix(~1,data=data.frame(rep(1,n)))
   }else{
-    if(is.vector(X)){
+    if(length(dim(X))<2){
       X <- stats::model.matrix(~X)
       if(ncol(X)>2)  colnames(X)[-1] <- substr(colnames(X)[-1],2,nchar(colnames(X)[-1]))
     }
@@ -91,7 +91,7 @@ SSI <- function(y, X = NULL, b = NULL, Z = NULL, K, indexK = NULL,
     if(length(dim(lambda))==2){
         if(nrow(lambda) != nTST) stop("Object 'lambda' must be a vector or a matrix with nTST rows")
     }else{
-      if(!is.vector(lambda,mode="numeric") | any(diff(lambda) >0))
+      if(length(dim(lambda))==2 | mode(lambda)!="numeric" | any(diff(lambda) >0))
         stop("Object 'lambda' must be a vector of decreasing numbers")
     }
   }
