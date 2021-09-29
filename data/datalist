@@ -1,5 +1,5 @@
-wheatHTP: X Y M CV genCOV_xy genCOV_yy resCOV_yy
-wheatHTP.E1: Y WL VI
-wheatHTP.E2: Y WL VI
-wheatHTP.E3: Y WL VI
-wheatHTP.E4: Y WL VI
+wheatHTP: X_E1 Y M genCOV_xy genCOV_yy resCOV_yy
+wheatHTP.E1: Y X VI
+wheatHTP.E2: Y X VI
+wheatHTP.E3: Y X VI
+wheatHTP.E4: Y X VI
