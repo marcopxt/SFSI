@@ -340,7 +340,7 @@ for(tp in timepoints){
     # L1-PSI
     fm <- solveEN(VARx, gencov[,k],nLambda=100)
     # fm <- lars2(VARx, gencov[,k])  # Second option
-    beta <- as.matrix(fm$beta)[-1,]
+    beta <- t(fm$beta)[-1,]
     bL1PSI[[k]] <- data.frame(I(beta),df=fm$df[-1],lambda=fm$lambda[-1])
   }
   save(bSI,bPCSI,bL1PSI,file=paste0("coefficients_tp_",tp,".RData"))
@@ -534,7 +534,7 @@ for(k in 1:nPart)
     
     # L1-PSI
     fm <- solveEN(VARx, Gencov[,k],nLambda=100,maxIter=200,tol=1E-3)
-    beta <- as.matrix(fm$beta)[-1,]
+    beta <- t(fm$beta)[-1,]
     bL1PSI[[k]] <- data.frame(I(beta),df=fm$df[-1],lambda=fm$lambda[-1])
 }
 save(bPCSI,bL1PSI,nPart,file="multi_timepoint_coefficients.RData")
