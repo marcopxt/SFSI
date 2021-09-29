@@ -32,7 +32,7 @@ cov2dist <- function(V,void=FALSE)
 #====================================================================
 # Covariance matrix to correlation matrix (user-level)
 #====================================================================
-cov2cor2 <- function(V,void=FALSE)
+cov2cor2 <- function(V,a=1,void=FALSE)
 {
     if((sum(dim(V))/2)^2 != length(V)) stop("Object 'V' must be a squared matrix")
     if(!float::storage.mode(V) %in% c("double","float32")) storage.mode(V) <- "double"
@@ -44,9 +44,9 @@ cov2cor2 <- function(V,void=FALSE)
     if(void)
     {
       if(isFloat){
-       nOK <- .Call('cov2correlation',as.integer(p),V@Data,isFloat)[[1]]
+       nOK <- .Call('cov2correlation',as.integer(p),V@Data,isFloat,as.numeric(a))[[1]]
       }else{
-       nOK <- .Call('cov2correlation',as.integer(p),V,isFloat)[[1]]
+       nOK <- .Call('cov2correlation',as.integer(p),V,isFloat,as.numeric(a))[[1]]
       }
       out <- NULL
     }else{
@@ -54,7 +54,7 @@ cov2cor2 <- function(V,void=FALSE)
        out <- V@Data[]
       }else out <- V[]
 
-     nOK <- .Call('cov2correlation',as.integer(p),out,isFloat)[[1]]
+     nOK <- .Call('cov2correlation',as.integer(p),out,isFloat,as.numeric(a))[[1]]
      if(isFloat) out <- float::float32(out)
    }
    #dyn.unload("c_utils.so")
@@ -493,13 +493,13 @@ getSecondAxis <- function(lambda,df,maxLength=6)
 #====================================================================
 # Plot the top 2 PCs of the K matrix showing tst and trn points (user-level)
 #====================================================================
-# Z = NULL; indexK = subsetG = tst = U = d = group = group.shape = set.color = set.size = df = NULL
+# Z = NULL; subsetG = tst = U = d = group = group.shape = set.color = set.size = df = NULL
 # axis.labels = TRUE; curve = FALSE; bg.color = "gray20"; unified = TRUE; ntst = 36;
 # line.color = "gray90"; line.tick = 0.3; legend.pos="right";
 # point.color = "gray20"; sets = c("Testing","Supporting","Non-active")
 
-plotNet <- function(fm, B, Z = NULL, K, indexK = NULL, subsetG = NULL,
-           tst = NULL, U = NULL, d = NULL, group = NULL, group.shape = NULL,
+plotNet <- function(fm, B, Z = NULL, K, subsetG = NULL, tst = NULL,
+           U = NULL, d = NULL, group = NULL, group.shape = NULL,
            set.color = NULL, set.size = NULL, df = NULL, title, axis.labels = TRUE,
            curve = FALSE, bg.color = "gray20", unified = TRUE, ntst = 36,
            line.color = "gray90", line.tick = 0.3, legend.pos="right",
@@ -514,7 +514,7 @@ plotNet <- function(fm, B, Z = NULL, K, indexK = NULL, subsetG = NULL,
   if(is.null(U) & is.null(d))
   {
     if(is.character(K)){
-      K <- readBinary(K,indexRow=indexK,indexCol=indexK)
+      K <- readBinary(K)
     }
     if(is.null(K))
       stop("Matrix 'K' must be a positive semi definite matrix\n")
@@ -713,7 +713,7 @@ plotNet <- function(fm, B, Z = NULL, K, indexK = NULL, subsetG = NULL,
     ggplot2::scale_fill_manual(values = set.color,
               guide=ggplot2::guide_legend(override.aes=list(shape=21,size=2)))
 
- if(!flagGp) pt <- pt + ggplot2::guides(shape=FALSE)
+ if(!flagGp) pt <- pt + ggplot2::guides(shape="none")
 
   pt
 }
@@ -722,8 +722,8 @@ plotNet <- function(fm, B, Z = NULL, K, indexK = NULL, subsetG = NULL,
 #====================================================================
 # Plot the coefficients path in a penalized regression (user-level)
 #====================================================================
-# Z=NULL; K=G2; indexK = NULL; tst=NULL; title=NULL; maxCor=0.85
-plotPath <- function(fm, Z=NULL, K=NULL, indexK = NULL, tst=NULL, title=NULL, maxCor=0.85)
+# Z=NULL; K=G2; tst=NULL; title=NULL; maxCor=0.85
+plotPath <- function(fm, Z=NULL, K=NULL, tst=NULL, title=NULL, maxCor=0.85)
 {
   k <- NULL
   flagKinship <- FALSE
@@ -744,7 +744,7 @@ plotPath <- function(fm, Z=NULL, K=NULL, indexK = NULL, tst=NULL, title=NULL, ma
     if(!is.null(K)){
       flagKinship <- TRUE
       if(is.character(K)){
-        K <- readBinary(K,indexRow=indexK,indexCol=indexK)
+        K <- readBinary(K)
       }
       if(!is.null(Z))
       {
@@ -782,7 +782,7 @@ plotPath <- function(fm, Z=NULL, K=NULL, indexK = NULL, tst=NULL, title=NULL, ma
     {
       b0 <- as.matrix(beta[[i]])
       if(trim){
-        indexOK <- getIndexCorrelated(b0,maxCor)
+        indexOK <- getIndexCorrelated(t(b0),maxCor)
       }else indexOK <- seq_along(fm$trn)
 
       tmp <- matrix(NA,nrow=1,ncol=length(indexOK))
@@ -792,18 +792,18 @@ plotPath <- function(fm, Z=NULL, K=NULL, indexK = NULL, tst=NULL, title=NULL, ma
       }
       dimnames(tmp) <- list(fm$tst[indexTST[i]],fm$trn[indexOK])
       tmp <- reshape::melt(tmp)
-      tmp <- tmp[rep(1:nrow(tmp),each=nDF),]
+      tmp <- tmp[rep(1:nrow(tmp),nDF),]
 
-      df0 <- rep(df,length(indexOK))
-      lambda0 <- rep(lambda,length(indexOK))
-      b0 <- as.vector(b0[,indexOK])
+      df0 <- rep(df,each=length(indexOK))
+      lambda0 <- rep(lambda,each=length(indexOK))
+      b0 <- as.vector(b0[indexOK,])
       id <- factor(tmp$X1):factor(tmp$X2)
       dat <- rbind(dat,data.frame(df=df0,lambda=lambda0,beta=float::dbl(b0),k=tmp$value,id=id))
     }
 
   }else{
-    id <- factor(rep(seq(ncol(beta)),each=nrow(beta)))
-    dat <- data.frame(df=rep(df,ncol(beta)),lambda=rep(lambda,ncol(beta)),beta=as.vector(beta),id=id)
+    id <- factor(rep(seq(nrow(beta)),ncol(beta)))
+    dat <- data.frame(df=rep(df,each=nrow(beta)),lambda=rep(lambda,each=nrow(beta)),beta=as.vector(beta),id=id)
   }
 
   # Labels and breaks for the DF axis
@@ -844,7 +844,7 @@ plotPath <- function(fm, Z=NULL, K=NULL, indexK = NULL, tst=NULL, title=NULL, ma
   |    ._____| | | |       ._____| | .__| |__.     Marco Lopez-Cruz       |
   |    |_______| |_|       |_______| |_______|     Gustavo de los Campos  |
   |                                                                       |
-  |    Sparse Family and Selection Index. Version 1.0.0 (Aug 10, 2021)    |
+  |    Sparse Family and Selection Index. Version 1.0.0 (Sep 28, 2021)    |
   |    Type 'citation('SFSI')' to know how to cite SFSI                   |
   |    Type 'help(package='SFSI',help_type='html')' to see help           |
   |    Type 'browseVignettes('SFSI')' to see documentation                |

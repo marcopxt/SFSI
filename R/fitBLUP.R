@@ -2,14 +2,14 @@
 # return.Hinv = FALSE; tol=1E-5; maxIter=1000; interval=c(1E-9,1E9); warn=TRUE
 
 fitBLUP <- function(y, X = NULL, Z = NULL, K = NULL, U = NULL, d = NULL,
-                    indexK = NULL, h2 = NULL, BLUP = TRUE, method = c("REML","ML"),
+                    h2 = NULL, BLUP = TRUE, method = c("REML","ML"),
                     return.Hinv = FALSE, tol = 1E-5, maxIter = 1000,
                     interval = c(1E-9,1E9), warn = TRUE)
 {
   method <- match.arg(method)
 
   if(is.character(K)){
-    K <- readBinary(K,indexRow=indexK,indexCol=indexK)
+    K <- readBinary(K)
   }
   y <- as.vector(y)
   indexOK <- which(!is.na(y))
