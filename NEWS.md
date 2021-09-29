@@ -1,8 +1,11 @@
-# Version 1.0.0 (xx-xx-2021)
+# Version 1.0.0 (Sep-28-2021)
 
 ## New features
 
-  - Function 'solveEN' allows early stop when a user-provided number of non-zero predictors at a given value of lambda is reached (argument 'maxDF')
+  - Function 'solveEN' allows early stop when a user-provided number of non-zero predictors (at a given value of lambda) is reached (argument 'maxDF')
+  - Functions 'solveEN' and 'lars2' return object 'beta' as matrix with predictors in rows (rather than in columns)
+  - Function 'cov2cor2' allows multiply the resulting correlation matrix times a constant 'a' (default is 'a=1')
+  - Provided 'wheatHTP' dataset includes now a matrix of training-testing partitions ('CV' object) and calculations of genetic covariances between YLD and each of the wavelengths ('genCOV_xy' object), and among YLD, DTH, DTM, and PH traits ('genCOV_yy' object). Residuals covariances among YLD, DTH, DTM, and PH traits ('resCOV_yy' object) is also included
 
 ## Bug fixes
 
