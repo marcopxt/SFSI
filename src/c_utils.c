@@ -70,7 +70,7 @@ SEXP updatebeta(SEXP n, SEXP XtX, SEXP Xty, SEXP q, SEXP lambda, SEXP a, SEXP ma
     DF = PROTECT(allocVector(INTSXP, nlambda));
     pDF=INTEGER_POINTER(DF);
 
-    B = PROTECT(allocMatrix(REALSXP, nlambda, np));
+    B = PROTECT(allocMatrix(REALSXP, np, nlambda)); // dimension N predictors x N lambdas
     pB=NUMERIC_POINTER(B);
 
     b=(double *) R_alloc(np, sizeof(double));
@@ -140,7 +140,8 @@ SEXP updatebeta(SEXP n, SEXP XtX, SEXP Xty, SEXP q, SEXP lambda, SEXP a, SEXP ma
         pDF[k]=0;
         for(j=0; j<np; j++){
           if(fabs(b[j])>eps) pDF[k]++;
-          pB[k+j*nlambda]=b[j];
+          pB[k*np+j]=b[j];
+          //pB[k+j*nlambda]=b[j];
         }
         if(maxdf<np && pDF[k]>=maxdf) break;
     }
@@ -238,10 +239,11 @@ SEXP cov2distance(SEXP n, SEXP V, SEXP flagfloat)
 //      n:       Number of variables (columns in V)
 //      V:       Covariance matrix
 // ----------------------------------------------------------
-SEXP cov2correlation(SEXP n, SEXP V, SEXP flagfloat)
+SEXP cov2correlation(SEXP n, SEXP V, SEXP flagfloat, SEXP a)
 {
     float *pV1, *psdx1;
     double *pV2, *psdx2;
+    double a0;
     int np, nOK;
     int i, j, isFloat;
     long long pos1;
@@ -249,6 +251,7 @@ SEXP cov2correlation(SEXP n, SEXP V, SEXP flagfloat)
 
     np=INTEGER_VALUE(n);
     isFloat=asLogical(flagfloat);
+    a0=NUMERIC_VALUE(a);
 
     if(isFloat){
       PROTECT(V=AS_INTEGER(V));
@@ -273,11 +276,11 @@ SEXP cov2correlation(SEXP n, SEXP V, SEXP flagfloat)
         pos1=(long long)np*(long long)i + (long long)i;
         if(isFloat){
           psdx1[i]=sqrt(pV1[pos1]);
-          pV1[pos1]=1;
+          pV1[pos1]=a0*1;
           nOK=nOK+isfinite(1/psdx1[i]);
         }else{
           psdx2[i]=sqrt(pV2[pos1]);
-          pV2[pos1]=1;
+          pV2[pos1]=a0*1;
           nOK=nOK+isfinite(1/psdx2[i]);
         }
     }
@@ -288,14 +291,14 @@ SEXP cov2correlation(SEXP n, SEXP V, SEXP flagfloat)
         {
           if(isFloat){
             pos1=(long long)np*(long long)j + (long long)i;
-            pV1[pos1]=pV1[pos1]/(psdx1[j]*psdx1[i]);
+            pV1[pos1]=a0*pV1[pos1]/(psdx1[j]*psdx1[i]);
             pos1=(long long)np*(long long)i + (long long)j;
-            pV1[pos1]=pV1[pos1]/(psdx1[j]*psdx1[i]);
+            pV1[pos1]=a0*pV1[pos1]/(psdx1[j]*psdx1[i]);
           }else{
             pos1=(long long)np*(long long)j + (long long)i;
-            pV2[pos1]=pV2[pos1]/(psdx2[j]*psdx2[i]);
+            pV2[pos1]=a0*pV2[pos1]/(psdx2[j]*psdx2[i]);
             pos1=(long long)np*(long long)i + (long long)j;
-            pV2[pos1]=pV2[pos1]/(psdx2[j]*psdx2[i]);
+            pV2[pos1]=a0*pV2[pos1]/(psdx2[j]*psdx2[i]);
           }
         }
     }

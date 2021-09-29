@@ -13,7 +13,7 @@
 */
 
 /* .Call calls */
-extern SEXP cov2correlation(SEXP, SEXP, SEXP);
+extern SEXP cov2correlation(SEXP, SEXP, SEXP, SEXP);
 extern SEXP cov2distance(SEXP, SEXP, SEXP);
 extern SEXP delete_col(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP getCorrelated(SEXP, SEXP, SEXP);
@@ -23,7 +23,7 @@ extern SEXP writeBinFileFloat(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP addvalue2diag(SEXP, SEXP, SEXP, SEXP);
 
 static const R_CallMethodDef CallEntries[] = {
-    {"cov2correlation",   (DL_FUNC) &cov2correlation,    3},
+    {"cov2correlation",   (DL_FUNC) &cov2correlation,    4},
     {"cov2distance",      (DL_FUNC) &cov2distance,       3},
     {"delete_col",        (DL_FUNC) &delete_col,         6},
     {"getCorrelated",     (DL_FUNC) &getCorrelated,      3},
