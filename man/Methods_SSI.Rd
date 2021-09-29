@@ -57,11 +57,12 @@ Useful methods for retrieving, summarizing and visualizing important results fro
   require(SFSI)
   data(wheatHTP)
   
-  X = scale(X[1:200,])/sqrt(ncol(X))    # Subset and scale markers
-  G = tcrossprod(X)                     # Genomic relationship matrix
-  y = as.vector(scale(Y[1:200,"YLD"]))  # Subset ans scale response variable
+  index = which(CV[,1] == 2)            # Use only a subset of data
+  M = scale(M[index,])/sqrt(ncol(M))    # Subset and scale markers
+  G = tcrossprod(M)                     # Genomic relationship matrix
+  y = as.vector(scale(Y[index,"YLD"]))  # Subset ans scale response variable
   
-  fm1 = SSI(y,K=G,tst=1:50,trn=51:length(y))
+  fm1 = SSI(y,K=G,tst=1:70,trn=71:length(y))
   
   yHat = fitted(fm1)              # Predicted values for each SSI
   out = summary(fm1)              # Useful function to get results
