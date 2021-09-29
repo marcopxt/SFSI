@@ -4,7 +4,7 @@ setwd(tempdir())
 library(SFSI)
 data(wheatHTP)
 y = as.vector(Y[,"YLD"])  # Response variable
-X = scale(WL)             # Predictors
+X = scale(X)              # Predictors
 
 # Training and testing sets
 tst = sample(seq_along(y),ceiling(0.3*length(y)))

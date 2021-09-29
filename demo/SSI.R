@@ -4,9 +4,11 @@ setwd(tempdir())
 
 library(SFSI)
 data(wheatHTP)
-X = scale(X[1:400,])/sqrt(ncol(X))   # Subset and scale markers
-G = tcrossprod(X)                    # Genomic relationship matrix
-y = as.vector(scale(Y[1:400,"YLD"])) # Subset response variable
+
+index = which(CV[,1] == 2)
+M = scale(M[index,])/sqrt(ncol(M))   # Subset and scale markers
+G = tcrossprod(M)                    # Genomic relationship matrix
+y = as.vector(scale(Y[index,"YLD"])) # Subset response variable
 
 # Calculate heritability using all data
 fm1 = fitBLUP(y,K=G)
