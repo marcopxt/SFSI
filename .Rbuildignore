@@ -12,3 +12,4 @@
 ^src/symbols\.rds$
 ^\.travis\.yml$
 ^README\.md$
+^vignettes/Img/*\.png
