@@ -32,7 +32,7 @@ In the selection index all the available information contribute to the predictio
 or (in matrix notation)
 
 <p align="center">
-<img src="https://github.com/MarcooLopez/SFSI/blob/master/vignettes/Img2.png" height="28"/>
+<img src="https://github.com/MarcooLopez/SFSI/blob/master/vignettes/Img2.png" height="27"/>
 </p>
 
 where the predictors <b>x</b><sub><i>i</i></sub> can be indirect information from either:
@@ -86,7 +86,7 @@ This problem does not have a closed form solution; however, a solution can be ob
 In this case, the solution has the following closed form:
 
 <p align="center">
-<img src="https://github.com/MarcooLopez/SFSI/blob/master/vignettes/Img8.png" height="30"/>
+<img src="https://github.com/MarcooLopez/SFSI/blob/master/vignettes/Img8.png" height="28"/>
 </p>
 
 where <b>I</b> is an identity matrix.
