@@ -24,12 +24,14 @@ From GitHub (developing version)
 
 Prediction of **breeding values** (u<sub><i>i</i></sub>) for a target trait (y<sub><i>i</i></sub>) is usually done using a **Selection Index (SI)**.
 In the selection index all the available information contribute to the prediction of the *i*<sup>th</sup> candidate of selection as a linear combination of the form:
+
 <p align="center">
-I<sub><i>i</i></sub> = x<sub><i>i1</i></sub>&beta;<sub><i>i1</i></sub> + x<sub><i>i2</i></sub>&beta;<sub><i>i2</i></sub> + ... + x<sub><i>ip</i></sub>&beta;<sub><i>ip</i></sub>
+<img src="https://github.com/MarcooLopez/SFSI/blob/master/vignettes/Img1.png" width="300"/>
 </p>
+
 or (in matrix notation)
 <p align="center">
-I<sub><i>i</i></sub> = <b>x</b>'<sub><i>i</i></sub> <b>&beta;</b><sub><i>i</i></sub>
+<img src="https://github.com/MarcooLopez/SFSI/blob/master/vignettes/Img2.png" width="300"/>
 </p>
 where the predictors <b>x</b><sub><i>i</i></sub> can be indirect information from either:
 
@@ -43,14 +45,11 @@ In the first case, the borrowing of information is provided by the **genetic cov
 The weights <b>&beta;</b><sub><i>i</i></sub> = (&beta;<sub><i>i1</i></sub>,...,&beta;<sub><i>ip</i></sub>)'
 are derived by minimizing the optimization problem:
 <p align="center">
-<sup>^</sup>&beta;<sub><i>i</i></sub> = arg min <sup>1</sup>&frasl;<sub>2</sub> E(u<sub><i>i</i></sub> - <b>x</b>'<sub><i>i</i></sub> <b>&beta;</b><sub><i>i</i></sub>)<sup>2</sup>
-</p>
-<p align="center">
 <img src="https://github.com/MarcooLopez/SFSI/blob/master/vignettes/Img3.png" width="300"/>
 </p>
 Under standard assumptions, the solution to the above problem is
 <p align="center">
-<sup>^</sup>&beta;<sub><i>i</i></sub> = <b>P</b><sub>x</sub><sup>-1</sup> <b>G</b><sub>xy</sub>
+<img src="https://github.com/MarcooLopez/SFSI/blob/master/vignettes/Img4.png" width="300"/>
 </p>
 
 where <b>P</b><sub>x</sub> is the phenotypic variance-covariance matrix among predictors, <b>x</b><sub><i>i</i></sub>, and <b>G</b><sub>xy</sub> is a vector with the genetic covariances between predictors <b>x</b><sub><i>i</i></sub> and response y<sub><i>i</i></sub>.
@@ -61,7 +60,7 @@ The regression coefficients can be derived by impossing a penalization in the ab
 <sup>~</sup>&beta;<sub><i>i</i></sub> = arg min{<sup>1</sup>&frasl;<sub>2</sub> E(u<sub><i>i</i></sub> - <b>x</b>'<sub><i>i</i></sub> <b>&beta;</b><sub><i>i</i></sub>)<sup>2</sup> + &lambda; J(<b>&beta;</b><sub><i>i</i></sub>)}
 </p>
 
-where &lambda; is a penalty parameter and J(<b>&beta;</b><sub><i>i</i></sub>)
+where &lambda; is a penalty parameter and <i>F</i>(<b>&beta;</b><sub><i>i</i></sub>)
 is a penalty function on the regression coefficients. A value of &lambda;=0 yields the coefficients for the standard (un-penalized) selection index. Commonly used penalty functions are based on the L1- and L2- norms.
 
 * **L1-penalized Selection Index.** Is obtained using the L1-norm:
