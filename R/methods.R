@@ -218,11 +218,11 @@ plot.SSI_CV <- function(...,py=c("accuracy","MSE"), title=NULL,showFolds=FALSE)
     {
         fm0 <- object[[j]]
         names(fm0) <- paste0("CV",1:length(fm0))
-          rawdat <- do.call(rbind,lapply(fm0,function(x)reshape::melt(x[[py]])))
+          rawdat <- do.call(rbind,lapply(fm0,function(x)reshape2::melt(x[[py]])))
           colnames(rawdat) <- c("fold","SSI","y")
           rawdat <- data.frame(CV=unlist(lapply(strsplit(rownames(rawdat),"\\."),function(x)x[1])),rawdat)
-          rawdat$df <- do.call(rbind,lapply(fm0,function(x)reshape::melt(x[['df']])))$value
-          rawdat$lambda <- do.call(rbind,lapply(fm0,function(x)reshape::melt(x[['lambda']])))$value
+          rawdat$df <- do.call(rbind,lapply(fm0,function(x)reshape2::melt(x[['df']])))$value
+          rawdat$lambda <- do.call(rbind,lapply(fm0,function(x)reshape2::melt(x[['lambda']])))$value
           rawdat$negLogLambda <- -log(rawdat$lambda)
           #rawdat <- data.frame(obj=j,model=fm0[[1]]$name,method=fm0[[1]]$method,rawdat,stringsAsFactors=FALSE)
           rawdat <- data.frame(obj=j,model=fm0[[1]]$name,rawdat,stringsAsFactors=FALSE)

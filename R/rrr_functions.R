@@ -722,7 +722,7 @@ plotNet <- function(fm, B, Z = NULL, K, subsetG = NULL, tst = NULL,
 #====================================================================
 # Plot the coefficients path in a penalized regression (user-level)
 #====================================================================
-# Z=NULL; K=G2; tst=NULL; title=NULL; maxCor=0.85
+# Z=NULL; K=NULL; tst=NULL; title=NULL; maxCor=0.85
 plotPath <- function(fm, Z=NULL, K=NULL, tst=NULL, title=NULL, maxCor=0.85)
 {
   k <- NULL
@@ -791,13 +791,14 @@ plotPath <- function(fm, Z=NULL, K=NULL, tst=NULL, title=NULL, maxCor=0.85)
         if(float::storage.mode(tmp)=='float32') tmp <- float::dbl(tmp)
       }
       dimnames(tmp) <- list(fm$tst[indexTST[i]],fm$trn[indexOK])
-      tmp <- reshape::melt(tmp)
+      tmp <- reshape2::melt(tmp)
+      colnames(tmp) <- c("tst_i","trn_i","value")
       tmp <- tmp[rep(1:nrow(tmp),nDF),]
 
       df0 <- rep(df,each=length(indexOK))
       lambda0 <- rep(lambda,each=length(indexOK))
       b0 <- as.vector(b0[indexOK,])
-      id <- factor(tmp$X1):factor(tmp$X2)
+      id <- factor(tmp$tst_i):factor(tmp$trn_i)
       dat <- rbind(dat,data.frame(df=df0,lambda=lambda0,beta=float::dbl(b0),k=tmp$value,id=id))
     }
 
@@ -844,7 +845,7 @@ plotPath <- function(fm, Z=NULL, K=NULL, tst=NULL, title=NULL, maxCor=0.85)
   |    ._____| | | |       ._____| | .__| |__.     Marco Lopez-Cruz       |
   |    |_______| |_|       |_______| |_______|     Gustavo de los Campos  |
   |                                                                       |
-  |    Sparse Family and Selection Index. Version 1.0.0 (Sep 28, 2021)    |
+  |    Sparse Family and Selection Index. Version 1.0.0 (Sep 30, 2021)    |
   |    Type 'citation('SFSI')' to know how to cite SFSI                   |
   |    Type 'help(package='SFSI',help_type='html')' to see help           |
   |    Type 'browseVignettes('SFSI')' to see documentation                |
