@@ -45,9 +45,9 @@ are derived by minimizing the optimization problem:
 <p align="center">
 <sup>^</sup>&beta;<sub><i>i</i></sub> = arg min <sup>1</sup>&frasl;<sub>2</sub> E(u<sub><i>i</i></sub> - <b>x</b>'<sub><i>i</i></sub> <b>&beta;</b><sub><i>i</i></sub>)<sup>2</sup>
 </p>
-
+<p align="center">
 <img src="https://github.com/MarcooLopez/SFSI/blob/master/vignettes/Img3.png" width="300"/>
-
+</p>
 Under standard assumptions, the solution to the above problem is
 <p align="center">
 <sup>^</sup>&beta;<sub><i>i</i></sub> = <b>P</b><sub>x</sub><sup>-1</sup> <b>G</b><sub>xy</sub>
