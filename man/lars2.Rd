@@ -87,8 +87,8 @@ is the \ifelse{html}{\out{j<sup>th</sup>}}{\eqn{j^{th}}{j^th}} column of the mat
   require(SFSI)
   data(wheatHTP)
   
-  y = as.vector(Y[,"YLD"])  # Response variable
-  X = scale(X)              # Predictors
+  y = as.vector(Y[,"E1"])  # Response variable
+  X = scale(X_E1)           # Predictors
 
   # Training and testing sets
   tst = 1:ceiling(0.3*length(y))

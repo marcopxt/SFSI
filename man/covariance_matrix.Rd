@@ -59,10 +59,9 @@ Variances are obtained from the diagonal values while covariances are obtained f
 }
 \examples{
   require(SFSI)
+  data(wheatHTP)
   
-  # Simulate matrix
-  n = 100; p=5
-  X = scale(matrix(rnorm(n*p),ncol=p),FALSE,rep(1,p))
+  X = scale(Y[,4:7])
   (V = crossprod(X))             # Covariance matrix 
   
   # Covariance matrix to distance matrix

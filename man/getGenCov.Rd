@@ -94,11 +94,11 @@ Solutions are found using the function 'fitBLUP' (see \code{help(fitBLUP)}) to s
   require(SFSI)
   data(wheatHTP)
   
-  index = which(CV[,1] == 2)             # Use only a subset of data
-  M = scale(M[index,])/sqrt(ncol(M))     # Subset and scale markers
-  G = tcrossprod(M)                      # Genomic relationship matrix
-  y = as.vector(scale(Y[index,"YLD"]))   # Subset response variable
-  X = scale(X[index,20:50])              # Subset reflectance data
+  index = which(Y$CV \%in\% 1:2)        # Use only a subset of data
+  M = scale(M[index,])/sqrt(ncol(M))    # Subset and scale markers
+  G = tcrossprod(M)                     # Genomic relationship matrix
+  y = as.vector(scale(Y[index,"E1"]))   # Subset response variable
+  X = scale(X_E1[index,20:50])          # Subset reflectance data
   
   fm = getGenCov(y,X,K=G)
   

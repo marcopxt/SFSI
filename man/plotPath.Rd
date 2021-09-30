@@ -28,17 +28,17 @@ Coefficients evolution path plot from an object of the class 'LASSO' or 'SSI'
   require(SFSI)
   data(wheatHTP)
   
-  index = which(CV[,1] == 2)            # Use only a subset of data
+  index = which(Y$CV == 1)              # Use only a subset of data
   M = scale(M[index,])/sqrt(ncol(M))    # Subset and scale markers
   G = tcrossprod(M)                     # Genomic relationship matrix
-  y = as.vector(scale(Y[index,"YLD"]))  # Subset response variable
-  X = scale(X[index,])                  # Reflectance data
+  y = as.vector(scale(Y[index,"E1"]))   # Subset response variable
+  X = scale(X_E1[index,])               # Reflectance data
   
   # Sparse phenotypic regression
   fm1 = lars2(var(X),cov(y,X))
   
   # Sparse family index
-  fm2 = SSI(y,K=G,tst=1:15,trn=16:length(y))
+  fm2 = SSI(y,K=G,tst=1:10,trn=11:50)
   
   \donttest{
   plotPath(fm1)

@@ -161,13 +161,13 @@ Function 'SSI_CV' performs cross-validation within the training data specified i
   require(SFSI)
   data(wheatHTP)
   
-  index = which(CV[,1] == 2)            # Use only a subset of data
+  index = which(Y$CV == 1)              # Use only a subset of data
   M = scale(M[index,])/sqrt(ncol(M))    # Subset and scale markers
   G = tcrossprod(M)                     # Genomic relationship matrix
-  y = as.vector(scale(Y[index,"YLD"]))  # Subset ans scale response variable
+  y = as.vector(scale(Y[index,"E1"]))   # Subset ans scale response variable
   
   # Training and testing sets
-  tst = 1:ceiling(0.3*length(y))
+  tst = seq(1,length(y),by=3)
   trn = (seq_along(y))[-tst]
 
   # Calculate heritability using training data

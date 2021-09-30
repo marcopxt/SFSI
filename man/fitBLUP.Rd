@@ -99,13 +99,13 @@ Solutions are found using the GEMMA (Genome-wide Efficient Mixed Model Analysis)
   require(SFSI)
   data(wheatHTP)
   
-  index = which(CV[,1] == 2)           # Use only a subset of data
+  index = which(Y$CV \%in\% 1:2)       # Use only a subset of data
   M = scale(M[index,])/sqrt(ncol(M))   # Subset and scale markers
   G = tcrossprod(M)                    # Genomic relationship matrix
-  y = as.vector(scale(Y[index,"YLD"])) # Subset response variable
+  y = as.vector(scale(Y[index,"E1"]))  # Subset response variable
 
   # Training and testing sets
-  tst = 1:ceiling(0.3*length(y))
+  tst = seq(1,length(y),by=3)
   trn = seq_along(y)[-tst]
 
   yNA <- y

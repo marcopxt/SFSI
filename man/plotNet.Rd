@@ -69,12 +69,16 @@ Network plot of testing and training individuals from an object of the class 'SS
   require(SFSI)
   data(wheatHTP)
   
-  index = which(CV[,1] == 2)            # Use only a subset of data
+  index = which(Y$CV == 1)              # Use only a subset of data
   M = scale(M[index,])/sqrt(ncol(M))    # Subset and scale markers
   G = tcrossprod(M)                     # Genomic relationship matrix
-  y = as.vector(scale(Y[index,"YLD"]))  # Subset ans scale response variable
+  y = as.vector(scale(Y[index,"E1"]))   # Subset ans scale response variable
   
-  fm = SSI(y,K=G,tst=1:20,trn=21:length(y))
+  # Training and testing sets
+  tst = seq(1,length(y),by=6)
+  trn = seq_along(y)[-tst]
+
+  fm = SSI(y,K=G,tst=tst,trn=trn)
   
   # Basic setting
   plotNet(fm,K=G,bg.color="white",line.color="gray25")
