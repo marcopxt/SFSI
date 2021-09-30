@@ -5,10 +5,10 @@ setwd(tempdir())
 library(SFSI)
 data(wheatHTP)
 
-index = which(CV[,1] == 2)
+index = which(Y$CV %in% 1:2)
 M = scale(M[index,])/sqrt(ncol(M))  # Subset and scale markers
 G = tcrossprod(M)                   # Genomic relationship matrix
-y = scale(Y[index,"YLD"])           # Subset response variable
+y = scale(Y[index,"E1"])            # Subset response variable
 
 # Fit model, whole data
 fm1 = fitBLUP(y,K=G)
@@ -23,7 +23,7 @@ fm2$varU; fm2$varE; fm2$h2
 cor(y,M%*%fm2$u)             # Prediction accuracy
 
 # Training and testing sets
-tst = sample(seq_along(y),ceiling(0.3*length(y)))
+tst = seq(1,length(y),by=3)
 trn = seq_along(y)[-tst]
 
 yNA <- y

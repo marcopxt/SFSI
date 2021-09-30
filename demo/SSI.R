@@ -5,10 +5,10 @@ setwd(tempdir())
 library(SFSI)
 data(wheatHTP)
 
-index = which(CV[,1] == 2)
+index = which(Y$CV %in% 1:2)
 M = scale(M[index,])/sqrt(ncol(M))   # Subset and scale markers
 G = tcrossprod(M)                    # Genomic relationship matrix
-y = as.vector(scale(Y[index,"YLD"])) # Subset response variable
+y = as.vector(scale(Y[index,"E1"])) # Subset response variable
 
 # Calculate heritability using all data
 fm1 = fitBLUP(y,K=G)
@@ -27,7 +27,7 @@ cor(y,fm1$u)        # G-BLUP accuracy
 cor(y,fitted(fm3))  # SSI accuracy
 
 # Predicting a testing set using training set
-tst = sample(seq_along(y),ceiling(0.3*length(y)))
+tst = seq(1,length(y),by=3)
 trn = (seq_along(y))[-tst]
 
 # Calculate heritability in training data
