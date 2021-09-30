@@ -26,13 +26,15 @@ Prediction of **breeding values** (u<sub><i>i</i></sub>) for a target trait (y<s
 In the selection index all the available information contribute to the prediction of the *i*<sup>th</sup> candidate of selection as a linear combination of the form:
 
 <p align="center">
-<img src="https://github.com/MarcooLopez/SFSI/blob/master/vignettes/Img1.png" width="300"/>
+<img src="https://github.com/MarcooLopez/SFSI/blob/master/vignettes/Img1.png" height="100"/>
 </p>
 
 or (in matrix notation)
+
 <p align="center">
-<img src="https://github.com/MarcooLopez/SFSI/blob/master/vignettes/Img2.png" width="300"/>
+<img src="https://github.com/MarcooLopez/SFSI/blob/master/vignettes/Img2.png" height="110"/>
 </p>
+
 where the predictors <b>x</b><sub><i>i</i></sub> can be indirect information from either:
 
 - Correlated traits measured in the same candidates
@@ -44,47 +46,55 @@ In the first case, the borrowing of information is provided by the **genetic cov
 
 The weights <b>&beta;</b><sub><i>i</i></sub> = (&beta;<sub><i>i1</i></sub>,...,&beta;<sub><i>ip</i></sub>)'
 are derived by minimizing the optimization problem:
+
 <p align="center">
-<img src="https://github.com/MarcooLopez/SFSI/blob/master/vignettes/Img3.png" width="300"/>
+<img src="https://github.com/MarcooLopez/SFSI/blob/master/vignettes/Img3.png" height="120"/>
 </p>
+
 Under standard assumptions, the solution to the above problem is
+
 <p align="center">
-<img src="https://github.com/MarcooLopez/SFSI/blob/master/vignettes/Img4.png" width="300"/>
+<img src="https://github.com/MarcooLopez/SFSI/blob/master/vignettes/Img4.png" height="110"/>
 </p>
 
 where <b>P</b><sub>x</sub> is the phenotypic variance-covariance matrix among predictors, <b>x</b><sub><i>i</i></sub>, and <b>G</b><sub>xy</sub> is a vector with the genetic covariances between predictors <b>x</b><sub><i>i</i></sub> and response y<sub><i>i</i></sub>.
 
 ### Penalized Selection Index
 The regression coefficients can be derived by impossing a penalization in the above optimization function as
+
 <p align="center">
-<sup>~</sup>&beta;<sub><i>i</i></sub> = arg min{<sup>1</sup>&frasl;<sub>2</sub> E(u<sub><i>i</i></sub> - <b>x</b>'<sub><i>i</i></sub> <b>&beta;</b><sub><i>i</i></sub>)<sup>2</sup> + &lambda; J(<b>&beta;</b><sub><i>i</i></sub>)}
+<img src="https://github.com/MarcooLopez/SFSI/blob/master/vignettes/Img5.png" height="120"/>
 </p>
 
 where &lambda; is a penalty parameter and <i>F</i>(<b>&beta;</b><sub><i>i</i></sub>)
 is a penalty function on the regression coefficients. A value of &lambda;=0 yields the coefficients for the standard (un-penalized) selection index. Commonly used penalty functions are based on the L1- and L2- norms.
 
 * **L1-penalized Selection Index.** Is obtained using the L1-norm:
+
 <p align="center">
-J(<b>&beta;</b><sub><i>i</i></sub>) = &sum;<sub>j=1</sub>|&beta;<sub><i>ij</i></sub>|
+<img src="https://github.com/MarcooLopez/SFSI/blob/master/vignettes/Img6.png" height="110"/>
 </p>
 
 This problem does not have a closed form solution; however, a solution can be obtained using iterative algorithms such as Least Angle Regression (LARS) (Efron, 2004) or Coordinate Descent algorithms (Friedman, 2007). These algorithms are implemented in the SFSI R-package using <b>P</b><sub>x</sub> and <b>G</b><sub>xy</sub> as inputs.
 
 * **L2-penalized Selection Index.** Is obtained using the L2-norm:
+
 <p align="center">
-J(<b>&beta;</b><sub><i>i</i></sub>) = <sup>1</sup>&frasl;<sub>2</sub>&sum;<sub>j=1</sub>&beta;<sub><i>ij</i></sub><sup>2</sup>
+<img src="https://github.com/MarcooLopez/SFSI/blob/master/vignettes/Img7.png" height="110"/>
 </p>
 
 In this case, the solution has the following closed form:
+
 <p align="center">
-<sup>~</sup>&beta;<sub><i>i</i></sub> = (<b>P</b><sub>x</sub> + &lambda;<b>&#618;</b>)<sup>-1</sup> <b>G</b><sub>xy</sub>
+<img src="https://github.com/MarcooLopez/SFSI/blob/master/vignettes/Img8.png" height="110"/>
 </p>
 
 where <b>&#618;</b> is an identity matrix.
 
 * **Elastic-Net-penalized SI.** An elastic-net penalized index considers a penalization being a weighted sum of both norms,
+
 <p align="center">
-J(<b>&beta;</b><sub><i>i</i></sub>) = &alpha;&sum;<sub>j=1</sub>|&beta;<sub><i>ij</i></sub>| + <sup>1</sup>&frasl;<sub>2</sub>(1-&alpha;)&sum;<sub>j=1</sub>&beta;<sub><i>ij</i></sub><sup>2</sup>
+<img src="https://github.com/MarcooLopez/SFSI/blob/master/vignettes/Img9.png" height="110"/>
 </p>
 
 where &alpha; is a weighting parameter.
