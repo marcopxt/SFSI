@@ -26,13 +26,13 @@ Prediction of **breeding values** (u<sub><i>i</i></sub>) for a target trait (y<s
 In the selection index all the available information contribute to the prediction of the *i*<sup>th</sup> candidate of selection as a linear combination of the form:
 
 <p align="center">
-<img src="https://github.com/MarcooLopez/SFSI/blob/master/vignettes/Img1.png" height="50"/>
+<img src="https://github.com/MarcooLopez/SFSI/blob/master/vignettes/Img1.png" height="40"/>
 </p>
 
 or (in matrix notation)
 
 <p align="center">
-<img src="https://github.com/MarcooLopez/SFSI/blob/master/vignettes/Img2.png" height="55"/>
+<img src="https://github.com/MarcooLopez/SFSI/blob/master/vignettes/Img2.png" height="45"/>
 </p>
 
 where the predictors <b>x</b><sub><i>i</i></sub> can be indirect information from either:
