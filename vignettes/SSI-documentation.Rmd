@@ -14,7 +14,7 @@ output:
     toc: true
 bibliography: references.bib
 vignette: |
-  %\VignetteIndexEntry{Documentation: Optimal breeding value prediction using a Sparse Selection Index (Lopez-Cruz and de los Campos, 2020, Genetics)}
+  %\VignetteIndexEntry{Documentation: Lopez-Cruz and de los Campos (2021) Genetics 218(1):1-10}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
