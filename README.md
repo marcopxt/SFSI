@@ -46,7 +46,7 @@ are derived by minimizing the optimization problem:
 <sup>^</sup>&beta;<sub><i>i</i></sub> = arg min <sup>1</sup>&frasl;<sub>2</sub> E(u<sub><i>i</i></sub> - <b>x</b>'<sub><i>i</i></sub> <b>&beta;</b><sub><i>i</i></sub>)<sup>2</sup>
 </p>
 
-<img src="https://github.com/MarcooLopez/SFSI/blob/master/vignettes/Img3.svg" width="300"/>
+<img src="https://github.com/MarcooLopez/SFSI/blob/master/vignettes/Img3.tiff" width="300"/>
 
 Under standard assumptions, the solution to the above problem is
 <p align="center">
