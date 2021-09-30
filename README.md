@@ -46,6 +46,8 @@ are derived by minimizing the optimization problem:
 <sup>^</sup>&beta;<sub><i>i</i></sub> = arg min <sup>1</sup>&frasl;<sub>2</sub> E(u<sub><i>i</i></sub> - <b>x</b>'<sub><i>i</i></sub> <b>&beta;</b><sub><i>i</i></sub>)<sup>2</sup>
 </p>
 
+<img src="https://openclipart.org/image/2400px/svg_to_png/28580/kablam-Number-Animals-1.png" width="200"/> <img src="https://openclipart.org/download/71101/two.svg" width="300"/>
+
 Under standard assumptions, the solution to the above problem is
 <p align="center">
 <sup>^</sup>&beta;<sub><i>i</i></sub> = <b>P</b><sub>x</sub><sup>-1</sup> <b>G</b><sub>xy</sub>
