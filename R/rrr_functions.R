@@ -845,7 +845,7 @@ plotPath <- function(fm, Z=NULL, K=NULL, tst=NULL, title=NULL, maxCor=0.85)
   |    ._____| | | |       ._____| | .__| |__.     Marco Lopez-Cruz       |
   |    |_______| |_|       |_______| |_______|     Gustavo de los Campos  |
   |                                                                       |
-  |    Sparse Family and Selection Index. Version 1.0.0 (Sep 30, 2021)    |
+  |    Sparse Family and Selection Index. Version 1.0.1 (Oct 06, 2021)    |
   |    Type 'citation('SFSI')' to know how to cite SFSI                   |
   |    Type 'help(package='SFSI',help_type='html')' to see help           |
   |    Type 'browseVignettes('SFSI')' to see documentation                |
