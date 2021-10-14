@@ -2,7 +2,8 @@
 
 [![CRAN status](https://www.r-pkg.org/badges/version/SFSI?color=green)](https://CRAN.R-project.org/package=SFSI)
 [![CRAN checks](https://cranchecks.info/badges/worst/SFSI)](https://cran.r-project.org/web/checks/check_results_SFSI.html)
-[![Downloads](http://cranlogs.r-pkg.org/badges/SFSI?color=blue)](http://www.r-pkg.org/pkg/SFSI)
+[![Downloads](https://cranlogs.r-pkg.org/badges/grand-total/pleiotest)](http://www.r-pkg.org/pkg/SFSI)
+[![Downloads/month](http://cranlogs.r-pkg.org/badges/SFSI?color=blue)](http://www.r-pkg.org/pkg/SFSI)
 
 The SFSI Package implements shrinkage and variable selection regression procedures into the Selection Index framework. In this repository we maintain the latest (developing) version. This version contains the full data used in [Lopez-Cruz *et al.* (2020)](https://www.nature.com/articles/s41598-020-65011-2) (not provided through the CRAN version) for the development of penalized selection indices.
 
