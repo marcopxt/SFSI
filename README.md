@@ -112,7 +112,7 @@ A Penalized Selection Index involving the L1-norm is refered to as **Sparse Sele
 
 ## Documentation (two applications)
 * **Application with high-throughput phenotypes:**
-Lopez-Cruz *et al.* (Sci. Rep, 2020). 
+Lopez-Cruz *et al.* (Sci. Rep., 2020). 
 [[Manuscript]](https://www.nature.com/articles/s41598-020-65011-2)
 [[Documentation]](http://htmlpreview.github.io/?https://github.com/MarcooLopez/SFSI/blob/master/inst/doc/PSI-documentation.html)
 
