@@ -1,5 +1,9 @@
 ### Version 1.0.1 (mmm-dd-yyyy)
 
+**New features**
+
+  - Functions 'SSI' and 'SSI_CV' allow providing either 'theta' (residual/genetic variances ratio) or the 'h2' (heritability)
+
 **Bug fixes**
 
   - C-based routine associated to the 'readBinary' function now uses the 'Rf_allocMatrix' method to handle matrices whose length (number of rows x number of columns) exceed 2^31-1 = 2147483647
