@@ -1,11 +1,8 @@
 # SFSI: Sparse Family and Selection Indices
 
-[![CRAN status](https://www.r-pkg.org/badges/version/SFSI?color=green)](https://CRAN.R-project.org/package=SFSI)
-[![CRAN checks](https://cranchecks.info/badges/worst/SFSI)](https://cran.r-project.org/web/checks/check_results_SFSI.html)
-[![Downloads](https://cranlogs.r-pkg.org/badges/grand-total/SFSI)](http://www.r-pkg.org/pkg/SFSI)
-[![Downloads/month](http://cranlogs.r-pkg.org/badges/SFSI?color=blue)](http://www.r-pkg.org/pkg/SFSI)
+[![CRAN status](https://www.r-pkg.org/badges/version/SFSI?color=green)](https://CRAN.R-project.org/package=SFSI) [![CRAN checks](https://cranchecks.info/badges/worst/SFSI)](https://cran.r-project.org/web/checks/check_results_SFSI.html) [![Downloads](http://cranlogs.r-pkg.org/badges/SFSI?color=blue)](http://www.r-pkg.org/pkg/SFSI)
 
-The SFSI Package implements shrinkage and variable selection regression procedures into the Selection Index framework. In this repository we maintain the latest (developing) version. This version contains the full data used in [Lopez-Cruz *et al.* (2020)](https://www.nature.com/articles/s41598-020-65011-2) (not provided through the CRAN version) for the development of penalized selection indices.
+The SFSI R-package solves penalized regression problems offering tools for the solutions to penalized selection indices. In this repository we maintain the latest (developing) version. This version contains the full data used in [Lopez-Cruz *et al.* (2020)](https://www.nature.com/articles/s41598-020-65011-2) (not provided through the CRAN version) for the development of penalized selection indices.
 
 ## Package installation
 
@@ -26,7 +23,7 @@ From GitHub (developing version)
 ## Selection Indices (SI)
 
 Prediction of **breeding values** (u<sub><i>i</i></sub>) for a target trait (y<sub><i>i</i></sub>) is usually done using a **Selection Index (SI)**.
-In the selection index all the available information contribute to the prediction of the *i*<sup>th</sup> candidate of selection as a linear combination of the form:
+In the selection index all the available information contribute to the prediction of the *i*<sup>th</sup> candidate of selection as:
 
 <p align="center">
 <img src="https://github.com/MarcooLopez/SFSI/blob/master/vignettes/Img1.png" height="26"/>
@@ -72,15 +69,15 @@ The regression coefficients can be derived by impossing a penalization in the ab
 where &lambda; is a penalty parameter and <i>F</i>(<b>&beta;</b><sub><i>i</i></sub>)
 is a penalty function on the regression coefficients. A value of &lambda;=0 yields the coefficients for the standard (un-penalized) selection index. Commonly used penalty functions are based on the L1- and L2- norms.
 
-* **L1-penalized Selection Index.** Is obtained using the L1-norm:
+* **L1-penalized Selection Index:** is obtained using the L1-norm:
 
 <p align="center">
 <img src="https://github.com/MarcooLopez/SFSI/blob/master/vignettes/Img6.png" height="28"/>
 </p>
 
-This problem does not have a closed form solution; however, a solution can be obtained using iterative algorithms such as Least Angle Regression (LARS) (Efron, 2004) or Coordinate Descent algorithms (Friedman, 2007). These algorithms are implemented in the SFSI R-package using <b>P</b><sub>x</sub> and <b>G</b><sub>xy</sub> as inputs.
+This problem does not have a closed form solution; however, a solution can be obtained using Least Angle Regression (LARS) (Efron, 2004) or Coordinate Descent algorithms (Friedman, 2007). These algorithms are implemented in the SFSI R-package using <b>P</b><sub>x</sub> and <b>G</b><sub>xy</sub> as inputs.
 
-* **L2-penalized Selection Index.** Is obtained using the L2-norm:
+* **L2-penalized Selection Index:** is obtained using the L2-norm:
 
 <p align="center">
 <img src="https://github.com/MarcooLopez/SFSI/blob/master/vignettes/Img7.png" height="30"/>
@@ -94,7 +91,7 @@ In this case, the solution has the following closed form:
 
 where <b>I</b> is an identity matrix.
 
-* **Elastic-Net-penalized SI.** An elastic-net penalized index considers a penalization being a weighted sum of both norms,
+* **Elastic-Net-penalized SI:** considers a weighted penalization of both norms,
 
 <p align="center">
 <img src="https://github.com/MarcooLopez/SFSI/blob/master/vignettes/Img9.png" height="30"/>
@@ -112,14 +109,10 @@ A Penalized Selection Index involving the L1-norm is refered to as **Sparse Sele
 
 ## Documentation (two applications)
 * **Application with high-throughput phenotypes:**
-Lopez-Cruz *et al.* (Sci. Rep., 2020). 
-[[Manuscript]](https://www.nature.com/articles/s41598-020-65011-2)
-[[Documentation]](http://htmlpreview.github.io/?https://github.com/MarcooLopez/SFSI/blob/master/inst/doc/PSI-documentation.html)
+Lopez-Cruz *et al.* (Sci. Rep, 2020). Manuscript [here](https://www.nature.com/articles/s41598-020-65011-2). Documentation [here](http://htmlpreview.github.io/?https://github.com/MarcooLopez/SFSI/blob/master/inst/doc/PSI-documentation.html).
 
 * **Application to Genomic Prediction:**
-Lopez-Cruz and de los Campos (Genetics, 2021).
-[[Manuscript]](https://doi.org/10.1093/genetics/iyab030)
-[[Documentation]](http://htmlpreview.github.io/?https://github.com/MarcooLopez/SFSI/blob/master/inst/doc/SSI-documentation.html)
+Lopez-Cruz and de los Campos (Genetics, 2021). Manuscript [here](https://doi.org/10.1093/genetics/iyab030). Documentation [here](http://htmlpreview.github.io/?https://github.com/MarcooLopez/SFSI/blob/master/inst/doc/SSI-documentation.html).
 
 ## How to cite SFSI R-package
 * Lopez-Cruz M, Olson E, Rovere G, Crossa J, Dreisigacker S, Mondal S, Singh R & de los Campos G **(2020)**. Regularized selection indices for breeding value prediction using hyper-spectral image data. *Scientific Reports*, 10, 8195.
