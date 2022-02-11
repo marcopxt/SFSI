@@ -51,10 +51,16 @@ are derived by minimizing the optimization problem:
 <img src="https://github.com/MarcooLopez/SFSI/blob/master/vignettes/Img3.png" height="40"/>
 </p>
 
+This problem is equivalent to:
+
+<p align="center">
+<img src="https://github.com/MarcooLopez/SFSI/blob/master/vignettes/Img4.png" height="40"/>
+</p>
+
 Under standard assumptions, the solution to the above problem is
 
 <p align="center">
-<img src="https://github.com/MarcooLopez/SFSI/blob/master/vignettes/Img4.png" height="28"/>
+<img src="https://github.com/MarcooLopez/SFSI/blob/master/vignettes/Img5.png" height="28"/>
 </p>
 
 where <b>P</b><sub>x</sub> is the phenotypic variance-covariance matrix among predictors, <b>x</b><sub><i>i</i></sub>, and <b>G</b><sub>xy</sub> is a vector with the genetic covariances between predictors <b>x</b><sub><i>i</i></sub> and response y<sub><i>i</i></sub>.
@@ -63,7 +69,7 @@ where <b>P</b><sub>x</sub> is the phenotypic variance-covariance matrix among pr
 The regression coefficients can be derived by impossing a penalization in the above optimization function as
 
 <p align="center">
-<img src="https://github.com/MarcooLopez/SFSI/blob/master/vignettes/Img5.png" height="32"/>
+<img src="https://github.com/MarcooLopez/SFSI/blob/master/vignettes/Img6.png" height="32"/>
 </p>
 
 where &lambda; is a penalty parameter and <i>F</i>(<b>&beta;</b><sub><i>i</i></sub>)
@@ -72,7 +78,7 @@ is a penalty function on the regression coefficients. A value of &lambda;=0 yiel
 * **L1-penalized Selection Index:** is obtained using the L1-norm:
 
 <p align="center">
-<img src="https://github.com/MarcooLopez/SFSI/blob/master/vignettes/Img6.png" height="28"/>
+<img src="https://github.com/MarcooLopez/SFSI/blob/master/vignettes/Img7.png" height="28"/>
 </p>
 
 This problem does not have a closed form solution; however, a solution can be obtained using Least Angle Regression (LARS) (Efron, 2004) or Coordinate Descent algorithms (Friedman, 2007). These algorithms are implemented in the SFSI R-package using <b>P</b><sub>x</sub> and <b>G</b><sub>xy</sub> as inputs.
@@ -80,13 +86,13 @@ This problem does not have a closed form solution; however, a solution can be ob
 * **L2-penalized Selection Index:** is obtained using the L2-norm:
 
 <p align="center">
-<img src="https://github.com/MarcooLopez/SFSI/blob/master/vignettes/Img7.png" height="30"/>
+<img src="https://github.com/MarcooLopez/SFSI/blob/master/vignettes/Img8.png" height="30"/>
 </p>
 
 In this case, the solution has the following closed form:
 
 <p align="center">
-<img src="https://github.com/MarcooLopez/SFSI/blob/master/vignettes/Img8.png" height="27"/>
+<img src="https://github.com/MarcooLopez/SFSI/blob/master/vignettes/Img9.png" height="27"/>
 </p>
 
 where <b>I</b> is an identity matrix.
@@ -94,7 +100,7 @@ where <b>I</b> is an identity matrix.
 * **Elastic-Net-penalized SI:** considers a weighted penalization of both norms,
 
 <p align="center">
-<img src="https://github.com/MarcooLopez/SFSI/blob/master/vignettes/Img9.png" height="30"/>
+<img src="https://github.com/MarcooLopez/SFSI/blob/master/vignettes/Img10.png" height="30"/>
 </p>
 
 where &alpha; is a weighting parameter.
