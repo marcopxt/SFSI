@@ -11,6 +11,6 @@
 ^.*\.Rhistory$
 ^src/symbols\.rds$
 ^\.travis\.yml$
-^README\.html$
+^README\.md$
 ^NEWS\.html$
 ^vignettes/Img/*\.png
