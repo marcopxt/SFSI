@@ -52,9 +52,10 @@ coef.SSI <- function(object, ..., df=NULL, tst=NULL)
       }
       #cat("i=",i,"j=",j,"j2=",j2,"\n")
     }
+    if(!is.null(df)) tmp <- as.vector(tmp)
     BETA[[i]] <- tmp # Matrix::Matrix(tmp, sparse=TRUE)
   }
-  if(!is.null(df)) BETA <- do.call(cbind,BETA)
+  if(!is.null(df)) BETA <- do.call(rbind,BETA)
 
   BETA
 }

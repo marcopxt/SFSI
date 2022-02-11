@@ -1,16 +1,16 @@
 #====================================================================
 # Plot the top 2 PCs of the K matrix showing tst and trn points (user-level)
 #====================================================================
-# Z = NULL; tst = U = d = group = group.shape = set.color = set.size = df = NULL
-# axis.labels = TRUE; curve = FALSE; bg.color = "gray20"; unified = TRUE; ntst = 36;
+# Z = NULL; U = d = group = group.shape = set.color = set.size = df = NULL
+# axis.labels = TRUE; curve = FALSE; bg.color = "gray95"; unified = TRUE; ntst = 36;
 # line.color = "gray90"; line.tick = 0.3; legend.pos="right";
 # point.color = "gray20"; sets = c("Testing","Supporting","Non-active")
 
 net.plot <- function(object, B, Z = NULL, K, tst = NULL,
            U = NULL, d = NULL, group = NULL, group.shape = NULL,
            set.color = NULL, set.size = NULL, df = NULL, main, axis.labels = TRUE,
-           curve = FALSE, bg.color = "gray20", unified = TRUE, ntst = 36,
-           line.color = "gray90", line.tick = 0.3, legend.pos="right",
+           curve = FALSE, bg.color = "white", unified = TRUE, ntst = 36,
+           line.color = "gray80", line.tick = 0.3, legend.pos="right",
            point.color = "gray20", sets = c("Testing","Supporting","Non-active"))
 {
   set <- PC1 <- PC2 <- PC1_TRN <- PC1_TST <- PC2_TRN <- PC2_TST <- NULL
@@ -103,7 +103,7 @@ net.plot <- function(object, B, Z = NULL, K, tst = NULL,
 
   # Testing and training (active) set
   dat$set[tst] <- sets[1]
-  index <- do.call(c, lapply(1:ncol(B), function(j) any(abs(B[object$tst %in% tst,,drop=FALSE][,j]) > 0)))
+  index <- do.call(c, lapply(1:ncol(B), function(j) any(abs(B[object$tst %in% tst, ,drop=FALSE][,j]) > 0)))
   dat$set[object$trn[index]] <- sets[2]
   dat$set[object$trn[!index]] <- sets[3]
 
@@ -131,7 +131,7 @@ net.plot <- function(object, B, Z = NULL, K, tst = NULL,
   set.color <- set.color[1:length(sets)]
 
   if(is.null(set.size)){
-    set.size <- c(2.5,1.5,1)
+    set.size <- c(3.1, 2.1, 0.8)
   }
   set.size <- set.size[1:length(sets)]
 
@@ -193,6 +193,7 @@ net.plot <- function(object, B, Z = NULL, K, tst = NULL,
       ggplot2::geom_point(data=dat[dat$set==sets[2],],ggplot2::aes(shape=group,fill=set),color=point.color,size=set.size[2]) +
       ggplot2::theme_bw() + theme0
   }else{
+      set.size <- 0.7*set.size
       dat2 <- c()
       for(i in 1:length(tst))
       {
