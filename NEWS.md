@@ -1,3 +1,11 @@
+### Version 1.0.2 (Feb-10-2022)
+
+**New features**
+
+  - Functions 'lars2', 'SSI_CV', 'plotNet', 'plotPath' changed their names to 'LARS', 'SSI.CV', 'net.plot', and 'path.plot', respectively.
+  - Some arguments' functions changed their names to a more informative name (e.g., 'minLambda' => 'lambda.min') 
+
+  
 ### Version 1.0.1 (Jan-26-2022)
 
 **New features**
