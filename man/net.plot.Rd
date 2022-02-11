@@ -5,8 +5,8 @@
 net.plot(object, B, Z = NULL, K, tst = NULL, U = NULL, d = NULL,
         group = NULL, group.shape = NULL, set.color = NULL, 
         set.size = NULL, df = NULL, main, axis.labels = TRUE,
-        curve = FALSE, bg.color = "gray20", unified = TRUE,
-        ntst = 36, line.color = "gray90", line.tick = 0.3, 
+        curve = FALSE, bg.color = "white", unified = TRUE,
+        ntst = 36, line.color = "gray80", line.tick = 0.3, 
         legend.pos="right", point.color = "gray20",
         sets = c("Testing","Supporting","Non-active"))
 }
@@ -79,8 +79,8 @@ Network plot of testing and training individuals from an object of the class 'SS
   fm = SSI(y,K=G,tst=tst,trn=trn)
   
   # Basic setting
-  net.plot(fm,K=G,bg.color="white",line.color="gray25")
-  net.plot(fm,K=G,unified=FALSE)
+  net.plot(fm,K=G)
+  net.plot(fm,K=G,unified=FALSE,bg.color="white",line.color="gray25")
   
   \donttest{
   # Passing a matrix of coefficients
