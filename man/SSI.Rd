@@ -1,21 +1,21 @@
 
 \name{SSI}
 \alias{SSI}
-\alias{SSI_CV}
+\alias{SSI.CV}
 \title{Sparse Selection Index}
 \usage{
 SSI(y, X = NULL, b = NULL, Z = NULL, K, D = NULL, 
     theta = NULL, h2 = NULL, trn = seq_along(y), tst = seq_along(y), 
-    subset = NULL, alpha = 1, lambda = NULL, nLambda = 100,
-    minLambda = .Machine$double.eps^0.5, commonLambda = TRUE,
-    tol = 1E-4, maxIter = 500, method = c("REML","ML"),
-    saveAt = NULL, name = NULL, mc.cores = 1, verbose = TRUE)
+    subset = NULL, alpha = 1, lambda = NULL, nlambda = 100,
+    lambda.min = .Machine$double.eps^0.5, common.lambda = TRUE,
+    tol = 1E-4, maxiter = 500, method = c("REML","ML"),
+    save.at = NULL, name = NULL, mc.cores = 1, verbose = TRUE)
     
-SSI_CV(y, X = NULL, b = NULL, Z = NULL, K, D = NULL, 
+SSI.CV(y, X = NULL, b = NULL, Z = NULL, K, D = NULL, 
       theta = NULL, h2 = NULL, trn = seq_along(y), alpha = 1, 
-      lambda = NULL, nLambda = 100, minLambda = .Machine$double.eps^0.5,
-      nCV = 1, nFolds = 5, seed = NULL, commonLambda = TRUE,
-      tol = 1E-4, maxIter = 500, method = c("REML","ML"), 
+      lambda = NULL, nlambda = 100, lambda.min = .Machine$double.eps^0.5,
+      nCV = 1, nfolds = 5, seed = NULL, common.lambda = TRUE,
+      tol = 1E-4, maxiter = 500, method = c("REML","ML"), 
       name = NULL, mc.cores = 1, verbose = TRUE)
 }
 \arguments{
@@ -45,32 +45,32 @@ is provided and can be retrieved later using function 'collect' (see \code{help(
 
 \item{alpha}{(numeric) Value between 0 and 1 for the weights given to the L1 and L2-penalties}
 
-\item{lambda}{(numeric vector) Penalization parameter sequence. Default is \code{lambda=NULL}, in this case a decreasing grid of \code{nLambda} lambdas will be generated
+\item{lambda}{(numeric vector) Penalization parameter sequence. Default is \code{lambda=NULL}, in this case a decreasing grid of \code{nlambda} lambdas will be generated
 starting from a maximum equal to
 \ifelse{html}{\out{<center><font face="Courier">max(abs(G[trn,tst])/alpha)</font></center>}}{\deqn{\code{max(abs(G[trn,tst])/alpha)}}{max(abs(G[trn,tst])/alpha)}}
 to a minimum equal to zero. If \code{alpha=0} the grid is generated starting from a maximum equal to 5}
 
-\item{nLambda}{(integer) Number of lambdas generated when \code{lambda=NULL}}
+\item{nlambda}{(integer) Number of lambdas generated when \code{lambda=NULL}}
 
-\item{minLambda}{(numeric) Minimum value of lambda that are generated when \code{lambda=NULL}}
+\item{lambda.min}{(numeric) Minimum value of lambda in the generated grid when \code{lambda=NULL}}
 
-\item{nFolds}{(integer/character) Either 2,3,5,10 or 'n' indicating the number of non-overlaping folds in which the data is split into to do cross-validation. When \code{nFolds='n'} leave-one-out CV is performed}
+\item{nfolds}{(integer/character) Either 2,3,5,10 or 'n' indicating the number of non-overlaping folds in which the data is split into to do cross-validation. When \code{nfolds='n'} leave-one-out CV is performed}
 
 \item{seed}{(numeric vector) Seed to fix randomization when creating folds for cross-validation. If it is a vector, a number equal to its length of CV repetitions are performed}
 
 \item{nCV}{(integer) Number of CV repetitions to be performed. Default is \code{nCV=1}}
 
-\item{commonLambda}{\code{TRUE} or \code{FALSE} to whether computing the coefficients for a grid of lambdas common to all individuals in testing set
- or for a grid of lambdas specific to each individual in testing set. Default is \code{commonLambda=TRUE}}
+\item{common.lambda}{\code{TRUE} or \code{FALSE} to whether computing the coefficients for a grid of lambdas common to all individuals in testing set
+ or for a grid of lambdas specific to each individual in testing set. Default is \code{common.lambda=TRUE}}
 
 \item{mc.cores}{(integer) Number of cores used. The analysis is run in parallel when \code{mc.cores} is greater than 1. Default is \code{mc.cores=1}}
 
 \item{tol}{(numeric) Maximum error between two consecutive solutions of the CD algorithm to declare convergence}
 
-\item{maxIter}{(integer) Maximum number of iterations to run the CD algorithm at each lambda step before convergence is reached}
+\item{maxiter}{(integer) Maximum number of iterations to run the CD algorithm at each lambda step before convergence is reached}
 
-\item{saveAt}{(character) Prefix name that will be added to the output files name to be saved, this may include a path. Regression coefficients
-are saved as a binary file (single-precision: 32 bits, 7 significant digits). Default \code{saveAt=NULL} will no save any output}
+\item{save.at}{(character) Prefix name that will be added to the output files name to be saved, this may include a path. Regression coefficients
+are saved as a binary file (single-precision: 32 bits, 7 significant digits). Default \code{save.at=NULL} will no save any output}
 
 \item{method}{(character) Either 'REML' (Restricted Maximum Likelihood) or 'ML' (Maximum Likelihood) to calculate variance components as per the function 'fitBLUP'}
 
@@ -79,7 +79,7 @@ are saved as a binary file (single-precision: 32 bits, 7 significant digits). De
 \item{verbose}{\code{TRUE} or \code{FALSE} to whether printing each step}
 }
 \value{
-Function 'SSI' returns a list object of the class 'SSI' for which methods \code{coef}, \code{fitted}, \code{plot}, and \code{summary} exist. Functions 'plotNet' and 'plotPath' can be also used. It contains the elements:
+Function 'SSI' returns a list object of the class 'SSI' for which methods \code{coef}, \code{fitted}, \code{plot}, and \code{summary} exist. Functions 'net.plot' and 'path.plot' can be also used. It contains the elements:
 \itemize{
   \item \code{b}: (vector) fixed effects solutions (including the intercept).
   \item \code{Xb}: (vector) product of the design matrix 'X' times the fixed effects solutions.
@@ -90,7 +90,7 @@ Function 'SSI' returns a list object of the class 'SSI' for which methods \code{
   \item \code{file_beta}: path where regression coefficients are saved.
 }
 
-Function 'SSI_CV' returns a list object of length \code{nCV} of the class 'SSI_CV' for which methods \code{plot} and \code{summary} exist. Each element is also a list containing the elements:
+Function 'SSI.CV' returns a list object of length \code{nCV} of the class 'SSI.CV' for which methods \code{plot} and \code{summary} exist. Each element is also a list containing the elements:
 \itemize{
   \item \code{b}: (vector) solutions for the fixed effects (including the intercept) for each fold.
   \item \code{varU}, \code{varE}, \code{h2}: variance components estimated within each fold.
@@ -157,7 +157,7 @@ Function 'SSI' calculates each individual solution using the function 'solveEN' 
 and \code{Gamma} equal to
 \ifelse{html}{\out{<b>G</b><sub>trn,tst(i)</sub>}}{\eqn{\textbf{G}_{trn,tst(i)}}{G[trn,tst(i)]}}.
 
-Function 'SSI_CV' performs cross-validation within the training data specified in argument \code{trn}. Training data is divided into \eqn{k}{k} folds and the SSI is sequentially calculated for (all individuals in) one fold (testing set) using information from the remaining folds (training set).
+Function 'SSI.CV' performs cross-validation within the training data specified in argument \code{trn}. Training data is divided into \eqn{k}{k} folds and the SSI is sequentially calculated for (all individuals in) one fold (as testing set) using information from the remaining folds (as training set).
 }
 \examples{
   require(SFSI)
@@ -197,8 +197,8 @@ Function 'SSI_CV' performs cross-validation within the training data specified i
   # obtained from cross-validation in a traning set
   #---------------------------------------------------
   # Run a cross validation in training set
-  fm2 = SSI_CV(y,K=G,theta=theta,trn=trn,nFolds=5,name="1 5CV")
-  lambda = summary(fm2)$optCOR["mean","lambda"]
+  fm2 = SSI.CV(y,K=G,theta=theta,trn=trn,nfolds=5,name="1 5CV")
+  lambda = summary(fm2)$optCOR["lambda"]
   
   # Fit the index with the obtained lambda
   fm3 = SSI(y,K=G,theta=theta,trn=trn,tst=tst,lambda=lambda)
@@ -209,7 +209,7 @@ Function 'SSI_CV' performs cross-validation within the training data specified i
   
   \donttest{
   # Obtain an 'optimal' lambda by repeating the CV several times
-  fm22 = SSI_CV(y,K=G,theta=theta,trn=trn,nCV=5,name="5 5CV")
+  fm22 = SSI.CV(y,K=G,theta=theta,trn=trn,nCV=5,name="5 5CV")
   plot(fm22,fm2)
   }
 }

@@ -4,9 +4,9 @@
 \title{Coordinate Descent algorithm to solve Elastic-Net-type problems}
 \usage{
 solveEN(Sigma, Gamma, alpha = 1, lambda = NULL, 
-        nLambda = 100, minLambda = .Machine$double.eps^0.5,
-        maxDF = NULL, scale = TRUE, tol = 1e-05, 
-        maxIter = 1000, verbose = FALSE)
+        nlambda = 100, lambda.min = .Machine$double.eps^0.5,
+        dfmax = NULL, scale = TRUE, tol = 1e-05, 
+        maxiter = 1000, verbose = FALSE)
 }
 \arguments{
 \item{Sigma}{(numeric matrix) Variance-covariance matrix of predictors. It can be of the "float32" type as per the 'float' R-package}
@@ -14,13 +14,13 @@ solveEN(Sigma, Gamma, alpha = 1, lambda = NULL,
 \item{Gamma}{(numeric vector) Covariance between response variable and predictors}
 
 \item{lambda}{(numeric vector) Penalization parameter sequence. Default is \code{lambda=NULL}, in this case a decreasing grid of
-\code{'nLambda'} lambdas will be generated starting from a maximum equal to
+\code{'nlambda'} lambdas will be generated starting from a maximum equal to
 \ifelse{html}{\out{<center><font face="Courier">max(abs(Gamma)/alpha)</font></center>}}{\deqn{\code{max(abs(Gamma)/alpha)}}{max(abs(Gamma)/alpha)}}
 to a minimum equal to zero. If \code{alpha=0} the grid is generated starting from a maximum equal to 5}
 
-\item{nLambda}{(integer) Number of lambdas generated when \code{lambda=NULL}}
+\item{nlambda}{(integer) Number of lambdas generated when \code{lambda=NULL}}
 
-\item{minLambda}{(numeric) Minimum value of lambda that are generated when \code{lambda=NULL}}
+\item{lambda.min}{(numeric) Minimum value of lambda that are generated when \code{lambda=NULL}}
 
 \item{alpha}{(numeric) Value between 0 and 1 for the weights given to the L1 and L2-penalties}
 
@@ -29,10 +29,10 @@ taken from the diagonal of \code{Sigma}}
 
 \item{tol}{(numeric) Maximum error between two consecutive solutions of the CD algorithm to declare convergence}
 
-\item{maxIter}{(integer) Maximum number of iterations to run the CD algorithm at each lambda step before convergence is reached}
+\item{maxiter}{(integer) Maximum number of iterations to run the CD algorithm at each lambda step before convergence is reached}
 
-\item{maxDF}{(integer) Maximum number of non-zero coefficients in the last solution.
-Default \code{maxDF=NULL} will calculate solutions for the entire lambda sequence}
+\item{dfmax}{(integer) Maximum number of non-zero coefficients in the last solution.
+Default \code{dfmax=NULL} will calculate solutions for the entire lambda grid}
 
 \item{verbose}{\code{TRUE} or \code{FALSE} to whether printing each CD step}
 }
@@ -43,7 +43,7 @@ Returns a list object containing the elements:
   \item \code{beta}: (matrix) regression coefficients for each predictor (in rows) associated to each value of the penalization parameter lambda (in columns).
   \item \code{df}: (vector) degrees of freedom, number of non-zero predictors associated to each value of lambda.
 }
-The returned object is of the class 'LASSO' for which methods \code{fitted} exist. Function 'plotPath' can be also used
+The returned object is of the class 'LASSO' for which methods \code{fitted} exist. Function 'path.plot' can be also used
 }
 \description{
 Computes the entire Elastic-Net solution for the regression coefficients for all

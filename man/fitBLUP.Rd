@@ -5,7 +5,7 @@
 fitBLUP(y, X = NULL, Z = NULL, K = NULL, U = NULL, 
         d = NULL, theta = NULL, BLUP = TRUE, 
         method = c("REML","ML"), return.Hinv = FALSE, 
-        tol = 1E-5, maxIter = 1000, interval = c(1E-9,1E9),
+        tol = 1E-5, maxiter = 1000, interval = c(1E-9,1E9),
         warn = TRUE)  
 }
 \arguments{
@@ -31,7 +31,7 @@ fitBLUP(y, X = NULL, Z = NULL, K = NULL, U = NULL,
 
 \item{tol}{(numeric) Maximum error between two consecutive solutions (convergence tolerance) when finding the root of the log-likelihood's first derivative}
 
-\item{maxIter}{(integer) Maximum number of iterations to run before convergence is reached}
+\item{maxiter}{(integer) Maximum number of iterations to run before convergence is reached}
 
 \item{interval}{(numeric vector) Range of values in which the root is searched}
 
