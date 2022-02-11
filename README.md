@@ -54,7 +54,7 @@ are derived by minimizing the optimization problem:
 This problem is equivalent to:
 
 <p align="center">
-<img src="https://github.com/MarcooLopez/SFSI/blob/master/vignettes/Img4.png" height="40"/>
+<img src="https://github.com/MarcooLopez/SFSI/blob/master/vignettes/Img4.png" height="36"/>
 </p>
 
 Under standard assumptions, the solution to the above problem is
@@ -69,7 +69,7 @@ where <b>P</b><sub>x</sub> is the phenotypic variance-covariance matrix among pr
 The regression coefficients can be derived by impossing a penalization in the above optimization function as
 
 <p align="center">
-<img src="https://github.com/MarcooLopez/SFSI/blob/master/vignettes/Img6.png" height="32"/>
+<img src="https://github.com/MarcooLopez/SFSI/blob/master/vignettes/Img6.png" height="33"/>
 </p>
 
 where &lambda; is a penalty parameter and <i>F</i>(<b>&beta;</b><sub><i>i</i></sub>)
