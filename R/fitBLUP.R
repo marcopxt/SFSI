@@ -170,7 +170,7 @@ fitBLUP <- function(y, X = NULL, Z = NULL, K = NULL, U = NULL, d = NULL,
     if(!is.na(msg)) warning(msg,immediate.=TRUE)
   }
 
-  theta <- varE/varU
+  theta <- 1/ratio
   h2 <- varU/(varU + varE)
 
   out <- list(varE = varE, varU = varU, theta=theta, h2 = h2, b = bHat, u = uHat,

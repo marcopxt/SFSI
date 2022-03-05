@@ -311,6 +311,160 @@ get_breaks <- function(x, y, nbreaks=6, ymin=1)
   return(list(breaks.x=breaks.x,breaks.y=breaks.y))
 }
 
+
+has_names <- function(X){
+  length(unlist(dimnames(X))) == sum(dim(X))
+}
+
+#====================================================================
+# Obtain layout to for the net.plot function
+#====================================================================
+get_net <- function(X, K=NULL, xxx=NULL, yyy=NULL, tol=.Machine$double.eps)
+{
+  labelsAxis <- labels0 <- NULL
+
+  isSymmetric <- isSymmetric(X, tol=1E-6)
+
+  uniqueNames <- unique(c(rownames(X), colnames(X)))
+  if(is.null(xxx) | is.null(yyy))
+  {
+    if(isSymmetric){
+      xxx <- yyy <- 1:nrow(X)
+    }else{
+      if(has_names(X)){
+        if(!is.null(K) & has_names(K)){
+          if(all(uniqueNames %in% colnames(K))){
+            yyy <- match(rownames(X),rownames(K))
+            xxx <- match(colnames(X),rownames(K))
+          }else{
+            yyy <- match(rownames(X),uniqueNames)
+            xxx <- match(colnames(X),uniqueNames)
+            cat("Some row/column names of 'object' were not found in row names of 'K'.",
+                "\nInput 'K' will be ignored\n")
+            K <- NULL
+          }
+        }else{
+          yyy <- match(rownames(X),uniqueNames)
+          xxx <- match(colnames(X),uniqueNames)
+        }
+      }else{
+       yyy <- 1:nrow(X)
+       xxx <- nrow(X)+(1:ncol(X))
+      }
+    }
+  }
+
+  if(!is.null(K)){
+    if(all(xxx %in% seq(ncol(K))) & all(yyy %in% seq(ncol(K))))
+    {
+      if(any(dim(X) != dim(K))){
+        if((has_names(X) + has_names(K)) <= 1)
+        {
+          cat("Input 'object' couldn't be linked to 'K' through row/column names.",
+              "\nInput 'K' will be ignored\n")
+          K <- NULL
+        }else{
+          if(any(!uniqueNames %in% rownames(K))){
+            cat("Some row/column names of 'object' were not found in row names of 'K'.",
+                "\nInput 'K' will be ignored\n")
+            K <- NULL
+          }
+        }
+      }
+    }else{
+      if(isSymmetric){
+        cat("Input 'K' is ignored when nrow(object) > ncol(K)\n")
+      }else{
+        cat("Input 'K' is ignored when nrow(object)+ncol(object) > ncol(K)\n")
+      }
+      K <- NULL
+    }
+  }
+
+  # Labels
+  if(isSymmetric){
+    if(has_names(X)){
+      if(is.null(K)){
+        labels0 <- rownames(X)
+      }else labels0 <- rownames(K)
+    }else labels0 <- 1:ncol(X)
+  }else{
+     if(has_names(X)){
+       if(is.null(K)){
+         labels0 <- rep("",length(uniqueNames))
+         labels0[yyy] <- rownames(X)
+         labels0[xxx] <- colnames(X)
+      }else labels0 <- rownames(K)
+     }else{
+       labels0 <- rep("",nrow(X)+ncol(X))
+       labels0[yyy] <- paste0("R",seq_along(yyy))
+       labels0[xxx] <- paste0("C",seq_along(xxx))
+     }
+  }
+
+  # Get edges
+  edges <- vector("list",length(yyy))
+  names(edges) <- yyy
+  for(i in 1:nrow(X))
+  {
+    edges[[i]] <- NA
+    if(isSymmetric){
+      edges[[i]] <- which(abs(X[i,i:ncol(X)]) > tol) + i -1
+    }else{
+      edges[[i]]  <- xxx[which(abs(X[i, ]) > tol)]
+    }
+  }
+
+  # Sets: 1=Row, 2=Connected column, 3=Non-connected column, 4=1&2
+  set <- rep(3,length(labels0))
+
+  tmp <- unique(unlist(edges))
+  set[tmp[!tmp%in%yyy]] <- 2
+  set[yyy] <- 1
+  tmp <- intersect(tmp,yyy)
+  if(!isSymmetric & length(tmp) > 0) set[tmp] <- 4
+
+  if(is.null(K))
+  {
+    eee <- c()
+    if(isSymmetric){
+      gr <- igraph::make_empty_graph(n = ncol(X))
+      for(i in 1:nrow(X)){
+        index <- edges[[i]][-1]
+        if(length(index[!is.na(index)]) > 0) eee <- c(eee, as.vector(rbind(i,index)))
+      }
+    }else{
+      if(has_names(X)){
+          n0 <- length(uniqueNames)
+      }else n0 <- ncol(X)+nrow(X)
+      gr <- igraph::make_empty_graph(n = n0)
+      for(i in 1:nrow(X)){
+        index <- edges[[i]]
+        if(length(index[!is.na(index)]) > 0)   eee <- c(eee, as.vector(rbind(yyy[i],index)))
+      }
+    }
+
+    gr <- igraph::add_edges(gr, eee)
+    xy <- igraph::layout_with_fr(gr, dim=2, niter=2000)
+
+  }else{
+    tmp <- float::svd(K,nu=2,nv=0)
+    d <- tmp$d
+    xy <- tmp$u[,1:2]
+
+    expvarPC <- paste0(" (",sprintf('%.1f',100*d/sum(d)),"%)")
+    if(length(expvarPC) < 2) expvarPC <- NULL
+    labelsAxis <- paste0("PC ",1:2,expvarPC[1:2])
+  }
+
+  isEigen <- !is.null(K)
+  colnames(xy) <- c("x","y")
+
+  return(list(xy=xy, labels=as.character(labels0), labelsAxis=labelsAxis,
+              isSymmetric=isSymmetric, xxx=xxx, yyy=yyy, set=set,
+              isEigen=isEigen, edges=edges))
+}
+
 #====================================================================
 #====================================================================
 .onAttach <- function(libname, pkgname) {
@@ -323,7 +477,7 @@ get_breaks <- function(x, y, nbreaks=6, ymin=1)
   |    ._____| | | |       ._____| | .__| |__.     Marco Lopez-Cruz       |
   |    |_______| |_|       |_______| |_______|     Gustavo de los Campos  |
   |                                                                       |
-  |    Sparse Family and Selection Index. Version 1.0.2 (Feb 10, 2022)    |
+  |    Sparse Family and Selection Index. Version 1.0.2 (Feb 24, 2022)    |
   |    Type 'citation('SFSI')' to know how to cite SFSI                   |
   |    Type 'help(package='SFSI',help_type='html')' to see help           |
   |    Type 'browseVignettes('SFSI')' to see documentation                |

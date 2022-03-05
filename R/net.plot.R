@@ -1,72 +1,164 @@
 #====================================================================
-# Plot the top 2 PCs of the K matrix showing tst and trn points (user-level)
+# Plot the top 2 PCs of the K matrix showing tst and trn points
 #====================================================================
-# Z = NULL; U = d = group = group.shape = set.color = set.size = df = NULL
-# axis.labels = TRUE; curve = FALSE; bg.color = "gray95"; unified = TRUE; ntst = 36;
-# line.color = "gray90"; line.tick = 0.3; legend.pos="right";
+# Z = NULL; K=G2; group = group.shape = set.color = set.size = tst= df=NULL; tol=.Machine$double.eps
+# axis.labels = TRUE; curve = FALSE; bg.color = "white"; unified = TRUE; ntst = 36;
+# line.color = "gray90"; line.tick = 0.3; legend.pos="right"; show.names = TRUE
 # point.color = "gray20"; sets = c("Testing","Supporting","Non-active")
 
-net.plot <- function(object, B, Z = NULL, K, tst = NULL,
-           U = NULL, d = NULL, group = NULL, group.shape = NULL,
-           set.color = NULL, set.size = NULL, df = NULL, main, axis.labels = TRUE,
-           curve = FALSE, bg.color = "white", unified = TRUE, ntst = 36,
-           line.color = "gray80", line.tick = 0.3, legend.pos="right",
-           point.color = "gray20", sets = c("Testing","Supporting","Non-active"))
+net.plot <- function(object, Z = NULL, K = NULL, tst = NULL,
+           show.names = FALSE, group = NULL, group.shape = NULL,
+           set.color = NULL, set.size = NULL, df = NULL, main,
+           axis.labels = TRUE, curve = FALSE, bg.color = "white",
+           unified = TRUE, ntst = 36, line.color = "gray80",
+           line.tick = 0.3, legend.pos="right", point.color = "gray20",
+           sets = c("Testing","Supporting","Non-active"), tol = NULL)
 {
-  set <- PC1 <- PC2 <- PC1_TRN <- PC1_TST <- PC2_TRN <- PC2_TST <- NULL
+  set <- set_name <- label <- x <- y <- x_TRN <- x_TST <- y_TRN <- y_TST <- NULL
+  xxx <- yyy <- isEigen <- NULL
   legend.pos <- match.arg(legend.pos,
     choices=c("right","bottomright","bottomleft","topleft","topright","none"))
 
-  if(!inherits(object, "SSI")) stop("The input object is not of the class 'SSI'")
+  if(is.null(tol))  tol <- .Machine$double.eps
 
-  if(is.null(U) & is.null(d))
-  {
-    if(is.character(K)){
-      K <- readBinary(K)
+  if(!is.null(K)){
+    if(is.character(K))  K <- readBinary(K)
+    if(length(dim(K)) != 2 | (length(K) != nrow(K)^2)) {
+        stop("Input 'K' must be a squared matrix")
     }
-    if(is.null(K))
-      stop("Matrix 'K' must be a positive semi definite matrix\n")
     if(!is.null(Z)) {
-      if(length(dim(Z))!=2) stop("Object 'Z' must be a matrix with ncol(Z)=nrow(K)\n")
+      if(length(dim(Z)) != 2) stop("Object 'Z' must be a matrix with ncol(Z)=nrow(K)\n")
       K <- float::tcrossprod(Z,float::tcrossprod(Z,K))   # Z%*%K%*%t(Z)
     }
-    tmp <- float::svd(K,nu=2,nv=0)
-    d <- tmp$d
-    U <- tmp$u
-    expvarPC <- 100*d/sum(d)  # 100*d/sum(float::diag(K))
+  }
+
+  isSSI <- FALSE
+  if(inherits(object, "SSI")){
+    X <- NULL
+    isSSI <- TRUE
   }else{
-    if(is.null(U)){
-      stop("You are providing the eigevalues, but not the eigenvectors")
+    if(length(dim(object)) == 2L){
+      X <- object
+    }else stop("The input object is not of the class 'SSI' or a matrix")
+  }
+
+  if(isSSI){
+    if(is.null(df)) df <- summary.SSI(object)$optCOR['df']
+    if(0 > df | df > range(object$df)[2])
+      stop("Parameter 'df' must be greater than zero and no greater than 'trn' size")
+    X <- as.matrix(coef.SSI(object, df=df))
+
+    if(is.null(tst)){
+      yyy <- object$tst
     }else{
-      if(is.null(d)){
-        message("You are providing the eigenvectors, but not the eigenvalues\n",
-                "No variance explained can be calculated")
-        expvarPC <- NULL
+      yyy <- tst
+      if(any(!tst %in% object$tst))
+        stop("Some elements in 'tst' are not contained in 'object$tst'")
+    }
+
+    X <- X[object$tst %in% yyy, ,drop=FALSE]
+    xxx <- object$trn
+
+    if(!is.null(object$id)){
+      rownames(X) <- object$id[yyy]
+      colnames(X) <- object$id[xxx]
+    }else{
+      rownames(X) <- yyy
+      colnames(X) <- xxx
+    }
+
+    if(!is.null(K)){
+      if(length(object$y) != nrow(K)){
+        if(!is.null(object$id) & all(unlist(dimnames(X)) %in% rownames(K))){
+          xxx <- yyy <- NULL
+        }else{
+          cat("Input 'object' couldn't be linked to 'K'. Input 'K' will be ignored\n")
+          K <- xxx <- yyy <- NULL
+        }
       }else{
-        if(nrow(U) == length(d)){
-          expvarPC <- 100*d/sum(d)
-        }else expvarPC <- NULL
+        if(is.null(object$id)){
+          dimnames(K) <- list(1:nrow(K),1:ncol(K))
+        }else dimnames(K) <- list(object$id,object$id)
+        if(any(!yyy %in% 1:nrow(K))) stop("Some 'object$tst' indices are larger than 'ncol(K)'")
+        if(any(!xxx %in% 1:nrow(K))) stop("Some 'object$trn' indices are larger than 'ncol(K)'")
       }
+    }else{
+      xxx <- yyy <- NULL
     }
   }
-  tmp <- paste0(" (",sprintf('%.1f',expvarPC),"%)")
-  if(length(tmp)<2) tmp <- NULL
-  labelsPC <- paste0("PC ",1:2,tmp[1:2])
 
-  if(!is.null(tst)){
-      if(any(!tst %in% object$tst))
-          stop("Some elements in 'tst' are not contained in set 'object$tst'")
-  }else tst <- object$tst
-  if(!unified & length(tst) >= ntst){
-   cat("Large number of testing individuals. Only the first",ntst,"are shown\n")
-   tst <- tst[1:ntst]
+  net <- get_net(X, K=K, xxx=xxx, yyy=yyy, tol=tol)
+  isSymmetric <- net$isSymmetric
+  labelsAxis <- net$labelsAxis
+  xxx <- net$xxx
+  yyy <- net$yyy
+  isEigen <- net$isEigen
+
+  if(!isSSI & isSymmetric){
+      legend.pos <- "none"
+      if(!unified){
+        cat("Only an 'unified' plot can be produced with the input object data\n")
+        unified <- TRUE
+      }
+  }
+
+  if(!unified & length(yyy) >= ntst){
+    cat("Large number of testing individuals. Only the first",ntst,"are shown\n")
+    yyy <- yyy[1:ntst]
   }
 
   justx <- ifelse(length(grep("left",legend.pos))>0,0,1)
   justy <- ifelse(length(grep("bottom",legend.pos))>0,0,1)
   if(!legend.pos %in% c("none","right")) legend.pos <- c(abs(justx-0.01),abs(justy-0.01))
 
+  flagGp <- !is.null(group)
+  if(is.null(group)) group <- data.frame(group=rep(1,nrow(net$xy)))
+  gpName <- colnames(group)
+
+  if(!(class(sets) == "character" & length(sets) == 3))
+   stop("Parameter 'sets' must be a triplet of 'character' type")
+
+  dat <- data.frame(id=1:nrow(net$xy),label=net$labels,set=net$set,
+                    set_name=sets[net$set],group=group,float::dbl(net$xy))
+  if(any(net$set==4)) dat$set_name[net$set==4] <- sets[1]
+
+  dat$group <- factor(as.character(dat$group))
+  dat$set_name <- factor(as.factor(dat$set_name),levels=c(sets))
+
+  if(length(show.names)==1L) show.names <- rep(show.names, 3)
+
+  # Shape and color for the levels of group
+  if(!flagGp) dat$group <- dat$set_name
+  levelsGp <- levels(dat$group)
+  if(length(levelsGp) > 5)
+   stop("Number of levels of 'group' must be at most 5")
+
+  if(is.null(group.shape)){
+    if(flagGp){
+      group.shape <- c(21,22,23,24,25)
+    }else group.shape <- c(21,21,21)
+  }
+  group.shape <- group.shape[1:length(levelsGp)]
+
+  if(is.null(set.color)){
+    set.color <- c("#E69F00","#56B4E9","#999999")
+  }else if(length(set.color)==1) set.color <- rep(set.color,length(sets))
+  set.color <- set.color[1:length(sets)]
+
+  if(is.null(set.size)){
+    set.size <- c(3.1, 2.1, 0.8)
+    if(any(show.names)) set.size[show.names] <- 3.1
+  }else if(length(set.size)==1L) set.size <- rep(set.size,length(sets))
+  set.size <- set.size[1:length(sets)]
+
+  if(any(is.na(group.shape)))
+    stop("The number of elements in 'group.shape' must be of length ",length(levelsGp))
+
+  if(any(is.na(set.size)) | any(is.na(set.color)))
+    stop("The number of elements in 'set.size' and 'set.color' must be of length ",length(sets))
+
   theme0 <- ggplot2::theme(
+    plot.title = ggplot2::element_text(hjust = 0.5),
     panel.grid.minor = ggplot2::element_blank(),
     panel.grid.major = ggplot2::element_blank(),
     legend.box.spacing = ggplot2::unit(0.4, "lines"),
@@ -81,76 +173,16 @@ net.plot <- function(object, B, Z = NULL, K, tst = NULL,
     strip.text = ggplot2::element_blank(), panel.spacing = ggplot2::unit(0.1,"lines")
   )
 
-  if(missing(B)){
-    if(is.null(df)) df <- summary.SSI(object)$optCOR['df']
-    if(0 > df | df > range(object$df)[2])
-      stop("Parameter 'df' must be greater than zero and no greater than trn size")
-    B <- as.matrix(coef.SSI(object, df=df))
-  }else{
-    stopifnot(length(dim(B))==2L)
-    df <- mean(do.call(c, lapply(1:nrow(B), function(i) sum(abs(B[i,]) > 0))))
-  }
-
-  flagGp <- !is.null(group)
-  if(is.null(group)) group <- data.frame(group=rep(1,nrow(U)))
-  gpName <- colnames(group)
-
-  if(!(class(sets) == "character" & length(sets) == 3))
-   stop("Parameter 'sets' must be a triplet of 'character' type")
-
-  dat <- data.frame(id=1:nrow(U),set=sets[3],group=group,float::dbl(U[,1:2]))
-  dat$set <- as.character(dat$set)
-
-  # Testing and training (active) set
-  dat$set[tst] <- sets[1]
-  index <- do.call(c, lapply(1:ncol(B), function(j) any(abs(B[object$tst %in% tst, ,drop=FALSE][,j]) > 0)))
-  dat$set[object$trn[index]] <- sets[2]
-  dat$set[object$trn[!index]] <- sets[3]
-
-  colnames(dat) <- c("id","set","group","PC1","PC2")
-
-  dat$group <- factor(as.character(dat$group))
-  dat$set <- factor(dat$set,levels=c(sets))
-
-  # Shape and color for the levels of group
-  if(!flagGp) dat$group <- dat$set
-  levelsGp <- levels(dat$group)
-  if(length(levelsGp) > 5)
-   stop("Number of levels of 'group' must be at most 5")
-
-  if(is.null(group.shape)){
-    if(flagGp){
-      group.shape <- c(21,22,23,24,25)
-    }else group.shape <- c(21,21,21)
-  }
-  group.shape <- group.shape[1:length(levelsGp)]
-
-  if(is.null(set.color)){
-    set.color <- c("#E69F00","#56B4E9","#999999")
-  }
-  set.color <- set.color[1:length(sets)]
-
-  if(is.null(set.size)){
-    set.size <- c(3.1, 2.1, 0.8)
-  }
-  set.size <- set.size[1:length(sets)]
-
-  if(any(is.na(group.shape)))
-    stop("The number of elements in 'group.shape' must be of length ",length(levelsGp))
-
-  if(any(is.na(set.size)) | any(is.na(set.color)))
-    stop("The number of elements in 'set.size' and 'set.color' must be of length ",length(sets))
-
+  main0 <- NULL
   if(missing(main)){
-     main0 <- bquote(.(object$name)*". Support set size="*.(round(df)))
-     theme0 <- theme0 + ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5))
-  }else{
-    main0 <- main
-    if(is.null(main)){
-      theme0 <- theme0 + ggplot2::theme(plot.title = ggplot2::element_blank())
-    }else{
-      theme0 <- theme0 + ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5))
-    }
+     if(isSSI){
+       main0 <- bquote(.(object$name)*". Support set size="*.(round(df)))
+     }else theme0 <- theme0 + ggplot2::theme(plot.title = ggplot2::element_blank())
+
+  }else main0 <- main
+
+  if(is.null(main0)){
+    theme0 <- theme0 + ggplot2::theme(plot.title = ggplot2::element_blank())
   }
 
   if(!axis.labels){
@@ -158,70 +190,111 @@ net.plot <- function(object, B, Z = NULL, K, tst = NULL,
                         axis.ticks=ggplot2::element_blank())
   }
 
+  if(!isEigen){
+    theme0 <- theme0 + ggplot2::theme(axis.title=ggplot2::element_blank(),
+                               axis.text=ggplot2::element_blank(),
+                               axis.ticks=ggplot2::element_blank())
+  }
+
   names(group.shape) <- levelsGp
   names(set.color) <- names(set.size) <- sets
 
   # If unified plot
-  if(unified)
-  {
-    pt <- ggplot2::ggplot(dat,ggplot2::aes(x=PC1,y=PC2)) +
-           ggplot2::geom_point(data=dat[dat$set==sets[3],],ggplot2::aes(shape=group,fill=set),
-                    color=point.color,size=set.size[3])
+  if(unified){
+    pt <- ggplot2::ggplot(dat,ggplot2::aes(x=x,y=y))
+    if(show.names[3]){
+      pt <- pt + ggplot2::geom_label(data=dat[dat$set==3,],ggplot2::aes(label=label,fill=set_name),
+               label.padding=ggplot2::unit(0.15,"lines"),color=point.color,size=set.size[3])
 
-    for(i in 1:length(tst))
+    }else{
+           pt <- pt + ggplot2::geom_point(data=dat[dat$set==3,],ggplot2::aes(shape=group,fill=set_name),
+                    color=point.color,size=set.size[3])
+    }
+
+    for(i in 1:length(yyy))
     {
-      indexTRN <- which(abs(B[which(object$tst == tst[i]), ]) > 0)
-      if(length(indexTRN)>0)
+      xxx0 <- net$edges[[i]]
+      if(length(xxx0)>0)
       {
-        dat1 <- dat[object$trn, c("PC1","PC2")][indexTRN,]
-        dat2 <- dat[tst, c("PC1","PC2")][i,]
+        dat1 <- dat[xxx0, c("x","y")]
+        dat2 <- dat[yyy[i], c("x","y")]
         colnames(dat1) <- paste0(colnames(dat1),"_TRN")
         colnames(dat2) <- paste0(colnames(dat2),"_TST")
         dat1 <- data.frame(dat2[rep(1,nrow(dat1)),],dat1)
         if(curve){
-          pt <- pt + ggplot2::geom_curve(ggplot2::aes(x=PC1_TST,y=PC2_TST,xend=PC1_TRN,yend=PC2_TRN),
+          pt <- pt + ggplot2::geom_curve(ggplot2::aes(x=x_TST,y=y_TST,xend=x_TRN,yend=y_TRN),
                         data=dat1,alpha=0.4,size=line.tick,color=line.color,curvature=0.4)
         }else{
-          pt <- pt + ggplot2::geom_segment(ggplot2::aes(x=PC1_TST,y=PC2_TST,xend=PC1_TRN,yend=PC2_TRN),
+          pt <- pt + ggplot2::geom_segment(ggplot2::aes(x=x_TST,y=y_TST,xend=x_TRN,yend=y_TRN),
                         data=dat1,alpha=0.4,size=line.tick,color=line.color)
         }
       }
     }
+    # Nodes in rows
+    if(show.names[1]){
+      pt <- pt + ggplot2::geom_label(data=dat[dat$set%in%c(1,4),],ggplot2::aes(label=label,fill=set_name),
+                          label.padding=ggplot2::unit(0.15,"lines"),color=point.color,size=set.size[1])
+    }else{
+      pt <- pt  +
+        ggplot2::geom_point(data=dat[dat$set%in%c(1,4),],ggplot2::aes(shape=group,fill=set_name),
+                            color=point.color,size=set.size[1])
+    }
+    # Nodes in columns
+    if(show.names[2]){
+      pt <- pt + ggplot2::geom_label(data=dat[dat$set==2,],ggplot2::aes(label=label,fill=set_name),
+                          label.padding=ggplot2::unit(0.15,"lines"),color=point.color,size=set.size[2])
+    }else{
+      pt <- pt  + ggplot2::geom_point(data=dat[dat$set==2,],ggplot2::aes(shape=group,fill=set_name),
+                            color=point.color,size=set.size[2])
+    }
+    # Nodes that are in both rows and columns (based on row/column names)
+    if(any(dat$set==4)){
+      if(show.names[1] | show.names[2]){
+        pt <- pt +
+              ggplot2::geom_label(data=dat[dat$set==4,],label=" ",fill=set.color[sets[2]],
+                  label.padding=ggplot2::unit(0.135,"lines"),label.r=ggplot2::unit(0.35,"lines"),
+                  color=set.color[sets[1]],size=set.size[2]) +
+              ggplot2::geom_text(data=dat[dat$set==4,],ggplot2::aes(label=label),
+                  color=point.color,size=set.size[2])
+      }else{
+        pt <- pt  +
+           ggplot2::geom_point(data=dat[dat$set==4,],ggplot2::aes(shape=group),fill=set.color[sets[2]],
+                             color=set.color[sets[1]],size=set.size[1]*0.55)
+      }
 
-    pt <- pt  +
-      ggplot2::geom_point(data=dat[dat$set==sets[1],],ggplot2::aes(shape=group,fill=set),color=point.color,size=set.size[1]) +
-      ggplot2::geom_point(data=dat[dat$set==sets[2],],ggplot2::aes(shape=group,fill=set),color=point.color,size=set.size[2]) +
-      ggplot2::theme_bw() + theme0
+    }
+    pt <- pt + ggplot2::theme_bw() + theme0
+
   }else{
       set.size <- 0.7*set.size
       dat2 <- c()
-      for(i in 1:length(tst))
-      {
-        indexTRN <- which(abs(B[which(object$tst == tst[i]), ]) > 0)
-        if(length(indexTRN) > 0)
-        {
-          tmp <- dat[object$trn, ][-indexTRN,]
-          tmp$set <- sets[3]
-          tmp <- rbind(dat[object$trn, ][indexTRN,], tmp, dat[tst, ][i,])
+      for(i in 1:length(yyy)){
+        xxx0 <- net$edges[[i]]
+        if(length(xxx0) > 0){
+          tmp <- dat[-xxx0,]
+          tmp$set <- 3; tmp$set_name <- sets[3]
+          tmp2 <- dat[xxx0, ]
+          tmp2$set <- 2; tmp2$set_name <- sets[2]
+          tmp <- rbind(tmp, tmp2, dat[yyy[i], ])
           dat2 <- rbind(dat2,data.frame(tmp, ind = i))
         }
       }
 
-      pt <- ggplot2::ggplot(dat2,ggplot2::aes(x=PC1,y=PC2)) + ggplot2::facet_wrap(~ind) +
-             ggplot2::geom_point(data=dat2[dat2$set==sets[3],],ggplot2::aes(fill=set,shape=group),color=point.color,size=set.size[3]) +
-             ggplot2::geom_point(data=dat2[dat2$set==sets[2],],ggplot2::aes(fill=set,shape=group),color=point.color,size=set.size[2]) +
-             ggplot2::geom_point(data=dat2[dat2$set==sets[1],],ggplot2::aes(fill=set,shape=group),color=point.color,size=set.size[1]) +
-             ggplot2::theme_bw() + theme0
+      pt <- ggplot2::ggplot(dat2,ggplot2::aes(x=x,y=y)) + ggplot2::facet_wrap(~ind) +
+            ggplot2::geom_point(data=dat2[dat2$set_name==sets[3],],ggplot2::aes(fill=set_name,shape=group),color=point.color,size=set.size[3]) +
+            ggplot2::geom_point(data=dat2[dat2$set_name==sets[2],],ggplot2::aes(fill=set_name,shape=group),color=point.color,size=set.size[2]) +
+            ggplot2::geom_point(data=dat2[dat2$set_name==sets[1],],ggplot2::aes(fill=set_name,shape=group),color=point.color,size=set.size[1]) +
+            ggplot2::theme_bw() + theme0
 
   }
 
-  pt <- pt + ggplot2::labs(title=main0, x=labelsPC[1],y=labelsPC[2]) +
+  pt <- pt + ggplot2::labs(title=main0, x=labelsAxis[1],y=labelsAxis[2]) +
     ggplot2::scale_shape_manual(values = group.shape,
               guide=ggplot2::guide_legend(override.aes=list(size=2,fill="white"))) +
     ggplot2::scale_fill_manual(values = set.color,
               guide=ggplot2::guide_legend(override.aes=list(shape=21,size=2)))
 
- if(!flagGp) pt <- pt + ggplot2::guides(shape="none")
+  if(!flagGp) pt <- pt + ggplot2::guides(shape="none")
 
   pt
 }

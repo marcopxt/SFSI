@@ -49,6 +49,8 @@ SSI <- function(y, X = NULL, b = NULL, Z = NULL, K, D = NULL,
     stop("Product Z %*% K %*% t(Z) must be a squared matrix with number of rows",
      "\n(and columns) equal to n: number of elements in 'y'")
   }
+  id <- NULL
+  if(length(dimnames(K)) == 2) id <- rownames(K)
   dimnames(K) <- NULL
 
   if(!is.null(D)){
@@ -182,7 +184,7 @@ SSI <- function(y, X = NULL, b = NULL, Z = NULL, K, D = NULL,
     stop("Some sub-processes failed. Something went wrong during the analysis.")
   }
 
-  out <- list(name=name, y=y, Xb=Xb, b=b, varU=varU, varE=varE,
+  out <- list(name=name, id=id, y=y, Xb=Xb, b=b, varU=varU, varE=varE,
               theta=theta, h2=h2, trn=trn, tst=tst, alpha=alpha,
               df = do.call("rbind",lapply(out,function(x)x$df)),
               lambda = do.call("rbind",lapply(out,function(x)x$lambda)),

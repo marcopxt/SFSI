@@ -9,8 +9,9 @@ coef.SSI <- function(object, ..., df=NULL, tst=NULL)
         stop("Parameter 'df' must be greater than zero and no greater than the number of elements in the training set")
   }
 
+  singleLambda <- ncol(object$lambda) == 1L
   # Which index is the closest to DF (across all TST individuals)
-  which.df <- which.min(abs(apply(object$df,2,mean)-df))
+  which.df <- which.min(abs(apply(object$df,2,mean)-df[1]))
 
   if(is.null(tst)) tst <- object$tst
   if(sum(!tst %in%object$tst) > 0) stop("Some 'tst' elements were not found in the input object")
@@ -52,10 +53,15 @@ coef.SSI <- function(object, ..., df=NULL, tst=NULL)
       }
       #cat("i=",i,"j=",j,"j2=",j2,"\n")
     }
-    if(!is.null(df)) tmp <- as.vector(tmp)
+    if(!is.null(df) | singleLambda) tmp <- as.vector(tmp)
     BETA[[i]] <- tmp # Matrix::Matrix(tmp, sparse=TRUE)
   }
-  if(!is.null(df)) BETA <- do.call(rbind,BETA)
+
+  if(length(BETA) == 1){
+    BETA <- BETA[[1]]
+  }else{
+    if(!is.null(df) | singleLambda) BETA <- do.call(rbind,BETA)
+  }
 
   BETA
 }
@@ -84,7 +90,7 @@ fitted.SSI <- function(object, ...)
   if(length(indexdrop)>0) yTRN[indexdrop] <- 0
 
   uHat <- do.call(rbind,lapply(seq_along(object$tst),function(i){
-    float::crossprod(coef.SSI(object,tst=object$tst[i])[[1]],yTRN)[,1]
+    float::crossprod(coef.SSI(object,tst=object$tst[i]), yTRN)[,1]
   }))
   dimnames(uHat) <- list(object$tst,paste0("SSI.",1:ncol(uHat)))
 
@@ -101,13 +107,10 @@ plot.SSI <- function(..., py=c("accuracy","MSE"), nbreaks.x=6)
 
     xlab <- "Support set size";  ylab <- py
     main <- NULL
-    xmin <- 1; ymin <- NULL
     lwd <- ifelse("lwd" %in% names(args0), args0$lwd, 0.65)
     if("main" %in% names(args0)) main <- args0$main
     if("xlab" %in% names(args0)) xlab <- args0$xlab
     if("ylab" %in% names(args0)) ylab <- args0$ylab
-    if("ymin" %in% names(args0)) ymin <- args0$ymin
-    if("xmin" %in% names(args0)) xmin <- args0$xmin
 
     object <- args0[unlist(lapply(args0,function(x)class(x)=="SSI"))]
     if(length(object)==0) stop("No object of the class 'SSI' was provided")
@@ -131,7 +134,6 @@ plot.SSI <- function(..., py=c("accuracy","MSE"), nbreaks.x=6)
       panel.grid.major = ggplot2::element_blank(),
       plot.title = ggplot2::element_text(hjust = 0.5),
       legend.background = ggplot2::element_rect(fill="gray95"),
-      #legend.key = element_rect(fill="gray95"),
       legend.box.spacing = ggplot2::unit(0.4, "lines"),
       legend.justification = c(1,ifelse(py=="MSE",1,0)),
       legend.position=c(0.99,ifelse(py=="MSE",0.99,0.01)),
@@ -172,18 +174,27 @@ plot.SSI <- function(..., py=c("accuracy","MSE"), nbreaks.x=6)
 
     if(nrow(dat)==0 | nrow(meanopt)==0)  stop("The plot can not be generated with the provided data")
 
+    dat <- dat[!is.na(dat$y),]   # Remove NA values
+
+    if("xlim" %in% names(args0)){
+       xlim <- args0$xlim
+    }else xlim <- c(1,max(dat$df,na.rm=TRUE))
+    dat <- dat[dat$df >= xlim[1] & dat$df <= xlim[2],]
+
+    if("ylim" %in% names(args0)){
+       ylim <- args0$ylim
+    }else ylim <- range(dat$y, na.rm=TRUE)
+
     # Labels and breaks for the DF axis
-    tmp <- get_breaks(dat$lambda, dat$df, nbreaks=nbreaks.x, ymin=xmin)
+    tmp <- get_breaks(dat$lambda, dat$df, nbreaks=nbreaks.x, ymin=xlim[1])
     breaks0 <- tmp$breaks.x
     labels0 <- round(tmp$breaks.y)
     labels2 <- sprintf('%.2f', breaks0)
 
-    dat <- dat[!is.na(dat$y),]   # Remove NA values
-    dat <- dat[dat$df >= xmin,]
-    if(!is.null(ymin)) dat <- dat[dat$y >= ymin,]
+    dat <- dat[dat$y >= ylim[1] & dat$y <= ylim[2],]
 
     pt <- ggplot2::ggplot(dat,ggplot2::aes(-log(lambda),y,group=obj,color=name)) +
-          ggplot2::geom_line(size=lwd) +
+          ggplot2::geom_line(size=lwd) + ggplot2::lims(y=ylim) +
           ggplot2::geom_hline(data=dat2,ggplot2::aes(yintercept=y,group=obj,color=name),size=lwd) +
           ggplot2::labs(title=main,x=xlab,y=ylab) + ggplot2::theme_bw() + theme0 +
           ggplot2::geom_vline(data=meanopt,ggplot2::aes(xintercept=-log(lambda)),size=0.5,linetype="dotted",color="gray50") +

@@ -1,5 +1,4 @@
 
-
 # Plot the coefficients path in a penalized regression (user-level)
 
 # Z=NULL; K=NULL; tst=NULL; main=NULL; cor.max=0.85
