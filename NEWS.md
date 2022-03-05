@@ -1,11 +1,13 @@
-### Version 1.0.2 (Feb-10-2022)
+### Version 1.0.2 (Mar-04-2022)
 
 **New features**
 
+  - Some problems were fixed in the documentation structure as required by CRAN.
   - Functions 'lars2', 'SSI_CV', 'plotNet', 'plotPath' changed their names to 'LARS', 'SSI.CV', 'net.plot', and 'path.plot', respectively.
-  - Some arguments' functions changed their names to a more informative name (e.g., 'minLambda' => 'lambda.min') 
+  - Some arguments' functions changed their names to a more informative name (e.g., 'minLambda' => 'lambda.min')
+  - More functionalities added to 'net.plot' function
 
-  
+
 ### Version 1.0.1 (Jan-26-2022)
 
 **New features**

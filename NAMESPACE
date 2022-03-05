@@ -22,6 +22,5 @@ S3method(fitted,LASSO)
 S3method(plot,SSI)
 S3method(summary,SSI)
 
-importFrom(grDevices,rainbow)
 importFrom(stats,cor,var,predict,smooth.spline,IQR,model.matrix,uniroot,runif,sd)
 importFrom(utils,setTxtProgressBar,txtProgressBar,object.size)
