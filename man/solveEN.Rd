@@ -15,7 +15,7 @@ solveEN(Sigma, Gamma, alpha = 1, lambda = NULL,
 
 \item{lambda}{(numeric vector) Penalization parameter sequence. Default is \code{lambda=NULL}, in this case a decreasing grid of
 \code{'nlambda'} lambdas will be generated starting from a maximum equal to
-\ifelse{html}{\out{<center><font face="Courier">max(abs(Gamma)/alpha)</font></center>}}{\deqn{\code{max(abs(Gamma)/alpha)}}{max(abs(Gamma)/alpha)}}
+\ifelse{html}{\out{<div style='text-align:center;font-family:courier'>max(abs(Gamma)/alpha)</div>}}{\deqn{\code{max(abs(Gamma)/alpha)}}{max(abs(Gamma)/alpha)}}
 to a minimum equal to zero. If \code{alpha=0} the grid is generated starting from a maximum equal to 5}
 
 \item{nlambda}{(integer) Number of lambdas generated when \code{lambda=NULL}}
@@ -51,7 +51,7 @@ values of the penalization parameter, via the Coordinate Descent (CD) algorithm 
 }
 \details{
 Finds solutions for the regression coefficients in a linear model
-\ifelse{html}{\out{<center>y<sub>i</sub> = <b>x</b>'<sub>i</sub> <b>&beta;</b> + e<sub>i</sub></center>}}{\deqn{y_i=\textbf{x}_i'\boldsymbol{\beta}+e_i}{y_i = x'_i beta + e_i}}
+\ifelse{html}{\out{<div style='text-align:center'>y<sub>i</sub> = <b>x</b>'<sub>i</sub> <b>&beta;</b> + e<sub>i</sub></div>}}{\deqn{y_i=\textbf{x}_i'\boldsymbol{\beta}+e_i}{y_i = x'_i beta + e_i}}
 
 where
 \ifelse{html}{\out{y<sub>i</sub>}}{\eqn{y_i}{y_i}} is the response for the \ifelse{html}{\out{i<sup>th</sup>}}{\eqn{i^{th}}{i^th}} observation,
@@ -67,14 +67,14 @@ The regression coefficients
 are estimated as function of the variance matrix among
 predictors (\ifelse{html}{\out{<b>&Sigma;</b>}}{\eqn{\boldsymbol{\Sigma}}{Sigma}}) and the covariance vector between response and predictors (\ifelse{html}{\out{<b>&Gamma;</b>}}{\eqn{\boldsymbol{\Gamma}}{Gamma}}) by minimizing the penalized mean squared error function
 
-\ifelse{html}{\out{<center>-<b>&Gamma;</b>' <b>&beta;</b> + 1/2 <b>&beta;</b>' <b>&Sigma;</b> <b>&beta;</b> + &lambda; J(<b>&beta;</b>)</center>}}{\deqn{-\boldsymbol{\Gamma}' \boldsymbol{\beta} + 1/2 \boldsymbol{\beta}'\boldsymbol{\Sigma} \boldsymbol{\beta} + \lambda J(\boldsymbol{\beta})}{-Gamma' beta + 1/2 beta' Sigma beta + lambda J(beta)}}
+\ifelse{html}{\out{<div style='text-align:center'>-<b>&Gamma;</b>' <b>&beta;</b> + 1/2 <b>&beta;</b>' <b>&Sigma;</b> <b>&beta;</b> + &lambda; J(<b>&beta;</b>)</div>}}{\deqn{-\boldsymbol{\Gamma}' \boldsymbol{\beta} + 1/2 \boldsymbol{\beta}'\boldsymbol{\Sigma} \boldsymbol{\beta} + \lambda J(\boldsymbol{\beta})}{-Gamma' beta + 1/2 beta' Sigma beta + lambda J(beta)}}
 
 where \ifelse{html}{\out{&lambda;}}{\eqn{\lambda}{lambda}}
 is the penalization parameter and
 \ifelse{html}{\out{J(<b>&beta;</b>)}}{\eqn{J(\boldsymbol{\beta})}{J(beta)}}
 is a penalty function given by
 
-\ifelse{html}{\out{<center>1/2(1-&alpha;)||<b>&beta;</b>||<sub>2</sub><sup>2</sup> + &alpha;||<b>&beta;</b>||<sub>1</sub></center>}}{\deqn{1/2(1-\alpha)||\boldsymbol{\beta}||_2^2 + \alpha||\boldsymbol{\beta}||_1}{1/2(1-alpha)||beta||_2^2 + alpha||beta||_1}}
+\ifelse{html}{\out{<div style='text-align:center'>1/2(1-&alpha;)||<b>&beta;</b>||<sub>2</sub><sup>2</sup> + &alpha;||<b>&beta;</b>||<sub>1</sub></div>}}{\deqn{1/2(1-\alpha)||\boldsymbol{\beta}||_2^2 + \alpha||\boldsymbol{\beta}||_1}{1/2(1-alpha)||beta||_2^2 + alpha||beta||_1}}
 
 where \ifelse{html}{\out{0 &le; &alpha; &le; 1}}{\eqn{0\leq\alpha\leq 1}{0 <= alpha <= 1}}, and
 \ifelse{html}{\out{||<b>&beta;</b>||<sub>1</sub> = &sum;<sub>j=1</sub>|&beta;<sub>j</sub>|}}{\eqn{||\boldsymbol{\beta}||_1=\sum_{j=1}^p|\beta_j|}{||beta||_1 = sum(|beta_j|)}} and
@@ -82,13 +82,13 @@ where \ifelse{html}{\out{0 &le; &alpha; &le; 1}}{\eqn{0\leq\alpha\leq 1}{0 <= al
 
 The "partial residual" excluding the contribution of the predictor
 \ifelse{html}{\out{x<sub>ij</sub>}}{\eqn{x_{ij}}{x_ij}} is
-\ifelse{html}{\out{<center>e<sub>i</sub><sup>(j)</sup> = y<sub>i</sub> - <b>x</b>'<sub>i</sub> <b>&beta;</b> + x<sub>ij</sub>&beta;<sub>j</sub></center>}}{\deqn{e_i^{(j)}=y_i-\textbf{x}_i'\boldsymbol{\beta}+x_{ij}\beta_j}{r_i = y_i - x'_i beta + x_ij beta_j}}
+\ifelse{html}{\out{<div style='text-align:center'>e<sub>i</sub><sup>(j)</sup> = y<sub>i</sub> - <b>x</b>'<sub>i</sub> <b>&beta;</b> + x<sub>ij</sub>&beta;<sub>j</sub></div>}}{\deqn{e_i^{(j)}=y_i-\textbf{x}_i'\boldsymbol{\beta}+x_{ij}\beta_j}{r_i = y_i - x'_i beta + x_ij beta_j}}
 
 then the ordinary least-squares (OLS) coefficient of
 \ifelse{html}{\out{x<sub>ij</sub>}}{\eqn{x_{ij}}{x_ij}}
 on this residual is (up-to a constant)
 
-\ifelse{html}{\out{<center>&beta;<sub>j</sub><sup>(ols)</sup> = &Gamma;<sub>j</sub> - <b>&Sigma;</b>'<sub>j</sub> <b>&beta;</b> + &beta;<sub>j</sub></center>}}{\deqn{\beta_j^{(ols)}=\Gamma_j-\boldsymbol{\Sigma}_j'\boldsymbol{\beta}+\beta_j}{beta_j^ols = Gamma_j - Sigma'_j beta}}
+\ifelse{html}{\out{<div style='text-align:center'>&beta;<sub>j</sub><sup>(ols)</sup> = &Gamma;<sub>j</sub> - <b>&Sigma;</b>'<sub>j</sub> <b>&beta;</b> + &beta;<sub>j</sub></div>}}{\deqn{\beta_j^{(ols)}=\Gamma_j-\boldsymbol{\Sigma}_j'\boldsymbol{\beta}+\beta_j}{beta_j^ols = Gamma_j - Sigma'_j beta}}
 
 where
 \ifelse{html}{\out{&Gamma;<sub>j</sub>}}{\eqn{\Gamma_j}{Gamma_j}}

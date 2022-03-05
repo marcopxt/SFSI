@@ -44,7 +44,7 @@ a variance matrix among predictors and a covariance vector between response and 
 }
 \details{
 Finds solutions for the regression coefficients in a linear model
-\ifelse{html}{\out{<center>y<sub>i</sub> = <b>x</b>'<sub>i</sub> <b>&beta;</b> + e<sub>i</sub></center>}}{\deqn{y_i=\textbf{x}_i'\boldsymbol{\beta}+e_i}{y_i = x'_i beta + e_i}}
+\ifelse{html}{\out{<div style='text-align:center'>y<sub>i</sub> = <b>x</b>'<sub>i</sub> <b>&beta;</b> + e<sub>i</sub></div>}}{\deqn{y_i=\textbf{x}_i'\boldsymbol{\beta}+e_i}{y_i = x'_i beta + e_i}}
 
 where
 \ifelse{html}{\out{y<sub>i</sub>}}{\eqn{y_i}{y_i}} is the response for the \ifelse{html}{\out{i<sup>th</sup>}}{\eqn{i^{th}}{i^th}} observation,
@@ -60,7 +60,7 @@ The regression coefficients
 are estimated as function of the variance matrix among
 predictors (\ifelse{html}{\out{<b>&Sigma;</b>}}{\eqn{\boldsymbol{\Sigma}}{Sigma}}) and the covariance vector between response and predictors (\ifelse{html}{\out{<b>&Gamma;</b>}}{\eqn{\boldsymbol{\Gamma}}{Gamma}}) by minimizing the penalized mean squared error function
 
-\ifelse{html}{\out{<center>-<b>&Gamma;</b>' <b>&beta;</b> + 1/2 <b>&beta;</b>'<b>&Sigma;</b><b>&beta;</b> + 1/2 &lambda; ||<b>&beta;</b>||<sub>1</sub></center>}}{\deqn{-\boldsymbol{\Gamma}' \boldsymbol{\beta} + 1/2 \boldsymbol{\beta}'\boldsymbol{\Sigma} \boldsymbol{\beta} + 1/2\lambda||\boldsymbol{\beta}||_1}{-Gamma' beta + 1/2 beta' Sigma beta + 1/2 lambda ||beta||_1}}
+\ifelse{html}{\out{<div style='text-align:center'>-<b>&Gamma;</b>' <b>&beta;</b> + 1/2 <b>&beta;</b>'<b>&Sigma;</b><b>&beta;</b> + 1/2 &lambda; ||<b>&beta;</b>||<sub>1</sub></div>}}{\deqn{-\boldsymbol{\Gamma}' \boldsymbol{\beta} + 1/2 \boldsymbol{\beta}'\boldsymbol{\Sigma} \boldsymbol{\beta} + 1/2\lambda||\boldsymbol{\beta}||_1}{-Gamma' beta + 1/2 beta' Sigma beta + 1/2 lambda ||beta||_1}}
 
 where \ifelse{html}{\out{&lambda;}}{\eqn{\lambda}{lambda}}
 is the penalization parameter and
@@ -73,7 +73,7 @@ and the residual
 \ifelse{html}{\out{e<sub>i</sub> = y<sub>i</sub> - <b>x</b>'<sub>i</sub> <b>&beta;</b>}}{\eqn{e_i=y_i-\textbf{x}_i'\boldsymbol{\beta}}{e_i = y_i - x'_i beta}}
 is expressed (up-to a constant) as
 
-\ifelse{html}{\out{<center>r<sub>j</sub> = &Gamma;<sub>j</sub> - <b>&Sigma;</b>'<sub>j</sub> <b>&beta;</b></center>}}{\deqn{r_j=\Gamma_j-\boldsymbol{\Sigma}_j'\boldsymbol{\beta}}{r_j = Gamma_j - Sigma'_j beta}}
+\ifelse{html}{\out{<div style='text-align:center'>r<sub>j</sub> = &Gamma;<sub>j</sub> - <b>&Sigma;</b>'<sub>j</sub> <b>&beta;</b></div>}}{\deqn{r_j=\Gamma_j-\boldsymbol{\Sigma}_j'\boldsymbol{\beta}}{r_j = Gamma_j - Sigma'_j beta}}
 
 where
 \ifelse{html}{\out{&Gamma;<sub>j</sub>}}{\eqn{\Gamma_j}{Gamma_j}}
