@@ -1,6 +1,6 @@
 Package: SFSI
 Title: Sparse Family and Selection Index
-Version: 1.0.2
+Version: 1.1.0
 Authors@R: c(
     person("Marco", "Lopez-Cruz", role = c("aut","cre"), email = "maraloc@gmail.com"),
     person("Gustavo", "de los Campos", role = c("aut"), email = "gustavoc@msu.edu"),
