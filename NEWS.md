@@ -1,4 +1,4 @@
-### Version 1.1.0 (Mar-04-2022)
+### Version 1.1.0 (Mar-08-2022)
 
 **New features**
 
