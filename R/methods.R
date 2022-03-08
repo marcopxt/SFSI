@@ -1,7 +1,7 @@
 
 #====================================================================
 #====================================================================
-coef.SSI <- function(object, ..., df=NULL, tst=NULL)
+coef.SSI <- function(object, ..., df = NULL, tst = NULL)
 {
   if("CV" %in% names(object)) stop("'coef' method cannot be applied after cross-validation")
   if(!is.null(df)){
@@ -99,7 +99,7 @@ fitted.SSI <- function(object, ...)
 
 #====================================================================
 #====================================================================
-plot.SSI <- function(..., py=c("accuracy","MSE"), nbreaks.x=6)
+plot.SSI <- function(..., py = c("accuracy","MSE"), nbreaks.x = 6)
 {
     name <- y <- obj <- lambda <- NULL
     py <- match.arg(py)
@@ -112,13 +112,13 @@ plot.SSI <- function(..., py=c("accuracy","MSE"), nbreaks.x=6)
     if("xlab" %in% names(args0)) xlab <- args0$xlab
     if("ylab" %in% names(args0)) ylab <- args0$ylab
 
-    object <- args0[unlist(lapply(args0,function(x)class(x)=="SSI"))]
-    if(length(object)==0) stop("No object of the class 'SSI' was provided")
+    object <- args0[unlist(lapply(args0,function(x)inherits(x, "SSI")))]
+    if(length(object) == 0L) stop("No object of the class 'SSI' was provided")
 
     # Treat repeated fm$name
     objectNames <- unlist(lapply(1:length(object),function(k) object[[k]]$name))
     index <- table(objectNames)[table(objectNames)>1]
-    if(length(index)>0){
+    if(length(index) > 0L){
       for(i in seq_along(index)){
         tmp <- which(objectNames == names(index[i]))
         for(j in seq_along(tmp)) objectNames[[tmp[j]]] <- paste0(objectNames[[tmp[j]]],"-",j)
@@ -211,12 +211,12 @@ summary.SSI <- function(object, ...)
 {
     args0 <- list(...)
 
-    tmp <- args0[unlist(lapply(args0,function(x)class(x) == "SSI"))]
-    if(length(tmp) > 0) cat("More than one object of the class 'SSI' was provided. Only the first one is considered\n")
+    tmp <- args0[unlist(lapply(args0,function(x)inherits(x, "SSI")))]
+    if(length(tmp) > 0L) cat("More than one object of the class 'SSI' was provided. Only the first one is considered\n")
 
     if(!inherits(object, "SSI")) stop("The input object is not of the class 'SSI'")
 
-    if(length(object$CV) > 0)
+    if(length(object$CV) > 0L)
     {
       df <- apply(do.call(rbind,lapply(object$CV,function(x)x$df)),2,mean,na.rm=TRUE)
       lambda <- apply(do.call(rbind,lapply(object$CV,function(x)x$lambda)),2,mean,na.rm=TRUE)
@@ -237,7 +237,7 @@ summary.SSI <- function(object, ...)
 
     # Detect maximum accuracy
     index <- which.max(out$accuracy)
-    if(length(index)==0)
+    if(length(index) == 0L)
     {
       optCOR <- out[1, ,drop=FALSE]
       #if(nrow(out)>1) optCOR[1,] <- NA

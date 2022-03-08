@@ -1,11 +1,11 @@
 
 # Collect all outputs when divided acording to 'subset' parameter
 
-collect <- function(prefix="")
+collect <- function(prefix = "")
 {
   filenames <- Sys.glob(paste0(prefix,"_*_of_*.RData"))
   out <- NULL
-  if(length(filenames)>0){
+  if(length(filenames) > 0){
       nFiles <- as.numeric(unlist(lapply(strsplit(filenames,"_"),function(x) gsub(".RData","",x[length(x)]))))
       if(length(unique(nFiles))>1)
         stop(" Different subset output files were found for the given prefix='",prefix,

@@ -1,7 +1,7 @@
 
-# Covariance matrix to distance matrix 
+# Covariance matrix to distance matrix
 
-cov2dist <- function(V, void=FALSE)
+cov2dist <- function(V, void = FALSE)
 {
     if((sum(dim(V))/2)^2 != length(V)) stop("Object 'V' must be a squared matrix")
     if(!float::storage.mode(V) %in% c("double","float32")) storage.mode(V) <- "double"

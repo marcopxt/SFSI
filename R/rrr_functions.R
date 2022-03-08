@@ -2,7 +2,7 @@
 #====================================================================
 # Add the value 'a' to the diagonal of 'V' matix
 #====================================================================
-add2diag <- function(V,a,void=FALSE)
+add2diag <- function(V, a, void = FALSE)
 {
   if((sum(dim(V))/2)^2 != length(V)) stop("Object 'V' must be a squared matrix")
   if(!float::storage.mode(V) %in% c("float32","double")) storage.mode(V) <- "double"
@@ -33,13 +33,13 @@ add2diag <- function(V,a,void=FALSE)
 #====================================================================
 # Used by the 'plotPath' function
 #====================================================================
-getIndexCorrelated <- function(X,maxCor=0.8)
+getIndexCorrelated <- function(X, maxCor = 0.8)
 {
   COV <- stats::cov(X)
   p <- ncol(COV)
   index <- .Call("getCorrelated",as.integer(p),COV,as.numeric(maxCor))
   out <- NULL
-  if(index[[2]]>0) out <- index[[1]][1:index[[2]]]
+  if(index[[2]] > 0L) out <- index[[1]][1:index[[2]]]
   out
 }
 
@@ -125,7 +125,7 @@ deleteCol <- function(R, z, k = p)
 #====================================================================
 # Recursive quantities for the GEMMA algorithm
 #====================================================================
-atPib <- function(i,Uta,Utb,UtX=UtX,dbar=dbar){
+atPib <- function(i, Uta, Utb, UtX = UtX, dbar = dbar){
   if(i==1) {
     aPw <- sum(Uta*UtX[,i]*dbar)
     bPw <- sum(Utb*UtX[,i]*dbar)
@@ -136,7 +136,7 @@ atPib <- function(i,Uta,Utb,UtX=UtX,dbar=dbar){
   }
 }
 
-atPia <- function(i,Uta,UtX=UtX,dbar=dbar){
+atPia <- function(i,Uta, UtX = UtX, dbar = dbar){
   if(i==1) {
     aPw <- sum(Uta*UtX[,i]*dbar)
     wPw <- sum(UtX[,i]^2*dbar)
@@ -146,7 +146,7 @@ atPia <- function(i,Uta,UtX=UtX,dbar=dbar){
   }
 }
 
-atPiPib <- function(i,Uta,Utb,UtX,dbar){
+atPiPib <- function(i, Uta, Utb, UtX, dbar){
   if(i==1) {
     aPw <- sum(Uta*UtX[,i]*dbar)
     aPPw <- sum(Uta*UtX[,i]*dbar^2)
@@ -163,7 +163,7 @@ atPiPib <- function(i,Uta,Utb,UtX,dbar){
   }
 }
 
-atPiPia <- function(i,Uta,UtX,dbar){
+atPiPia <- function(i, Uta, UtX, dbar){
   if(i==1) {
     aPw <- sum(Uta*UtX[,i]*dbar)
     aPPw <- sum(Uta*UtX[,i]*dbar^2)
@@ -177,7 +177,7 @@ atPiPia <- function(i,Uta,UtX,dbar){
   }
 }
 
-tr_Pi <- function(i,UtX,dbar){
+tr_Pi <- function(i, UtX, dbar){
   if(i==1) {
     wPw <- sum(UtX[,i]^2*dbar)
     wPPw <- sum(UtX[,i]^2*dbar^2)
@@ -190,7 +190,7 @@ tr_Pi <- function(i,UtX,dbar){
 #====================================================================
 # Derivative of the Log Likelihood (ML)
 #====================================================================
-dlogLik <- function(ratio,n,c0,Uty,UtX,d)
+dlogLik <- function(ratio, n, c0, Uty, UtX, d)
 {
   dbar <- 1/(ratio*d+1)
   #Tr_Hinv <- sum(dbar)
@@ -210,7 +210,7 @@ dlogLik <- function(ratio,n,c0,Uty,UtX,d)
 # Derivative of the Log-restricted Likelihood (REML)
 #====================================================================
 # tt=dlogResLik(ratio,n=n,c0=c0,Uty=Uty,UtX=UtX,d=d)
-dlogResLik <- function(ratio,n,c0,Uty,UtX,d)
+dlogResLik <- function(ratio, n, c0, Uty, UtX, d)
 {
   dbar <- 1/(ratio*d+1)
   Tr_Px <- tr_Pi(c0+1,UtX=UtX,dbar=dbar)
@@ -229,7 +229,7 @@ dlogResLik <- function(ratio,n,c0,Uty,UtX,d)
 #====================================================================
 # Search for the root ratio=varU/varE in a given interval
 #====================================================================
-searchInt <- function(method,interval,n,c0,Uty,UtX,d,maxiter,tol,lower,upper,varP)
+searchInt <- function(method, interval, n, c0, Uty, UtX, d, maxiter, tol, lower, upper, varP)
 {
   flag <- TRUE; i <- 1
   convergence <- ratio <- dbar <- varU <- varE <- bHat <- msg <- NA
@@ -245,7 +245,7 @@ searchInt <- function(method,interval,n,c0,Uty,UtX,d,maxiter,tol,lower,upper,var
                         UtX=UtX,d=d,tol=tol,maxiter=maxiter,trace=2),
                 silent = TRUE)
     }
-    if(class(tmp) == "list")
+    if(inherits(tmp, "list"))
     {
       ratio0 <- tmp$root
       if(ratio0 <= lower){
@@ -285,7 +285,7 @@ searchInt <- function(method,interval,n,c0,Uty,UtX,d,maxiter,tol,lower,upper,var
 # Labels and breaks for the DF axis
 #====================================================================
 # x = dat$lambda; y = dat$df
-get_breaks <- function(x, y, nbreaks=6, ymin=1)
+get_breaks <- function(x, y, nbreaks = 6, ymin = 1)
 {
   p <- max(round(y))
   #yy <- c(ymin,p-1,p)
@@ -313,19 +313,22 @@ get_breaks <- function(x, y, nbreaks=6, ymin=1)
 
 
 has_names <- function(X){
-  length(unlist(dimnames(X))) == sum(dim(X))
+  if(length(dim(X)) == 2L){
+    out <- length(unlist(dimnames(X))) == sum(dim(X))
+  }else out <- FALSE
+
+  out
 }
 
 #====================================================================
 # Obtain layout to for the net.plot function
 #====================================================================
-get_net <- function(X, K=NULL, xxx=NULL, yyy=NULL, tol=.Machine$double.eps)
+get_net <- function(X, K = NULL, xxx = NULL, yyy = NULL, eps = .Machine$double.eps)
 {
   labelsAxis <- labels0 <- NULL
-
   isSymmetric <- isSymmetric(X, tol=1E-6)
-
   uniqueNames <- unique(c(rownames(X), colnames(X)))
+
   if(is.null(xxx) | is.null(yyy))
   {
     if(isSymmetric){
@@ -355,29 +358,27 @@ get_net <- function(X, K=NULL, xxx=NULL, yyy=NULL, tol=.Machine$double.eps)
   }
 
   if(!is.null(K)){
-    if(all(xxx %in% seq(ncol(K))) & all(yyy %in% seq(ncol(K))))
-    {
-      if(any(dim(X) != dim(K))){
-        if((has_names(X) + has_names(K)) <= 1)
-        {
-          cat("Input 'object' couldn't be linked to 'K' through row/column names.",
-              "\nInput 'K' will be ignored\n")
-          K <- NULL
-        }else{
-          if(any(!uniqueNames %in% rownames(K))){
-            cat("Some row/column names of 'object' were not found in row names of 'K'.",
-                "\nInput 'K' will be ignored\n")
-            K <- NULL
-          }
-        }
+    if(all(dim(X) == dim(K))){
+      if(has_names(X) & !has_names(K)){
+          dimnames(K) <- dimnames(X)
       }
+      if(!has_names(X) & has_names(K)){
+          dimnames(X) <- dimnames(K)
+      }
+
     }else{
-      if(isSymmetric){
-        cat("Input 'K' is ignored when nrow(object) > ncol(K)\n")
-      }else{
-        cat("Input 'K' is ignored when nrow(object)+ncol(object) > ncol(K)\n")
+      if((has_names(X) + has_names(K)) <= 1){
+        cat("Input 'object' couldn't be linked to 'K' through row/column names.",
+            "\nInput 'K' will be ignored\n")
+        K <- NULL
       }
-      K <- NULL
+    }
+    if(has_names(X) & has_names(K)){
+      if(any(!uniqueNames %in% rownames(K))){
+        cat("Some row/column names of 'object' were not found in row names of 'K'.",
+          "\nInput 'K' will be ignored\n")
+          K <- NULL
+      }
     }
   }
 
@@ -409,9 +410,9 @@ get_net <- function(X, K=NULL, xxx=NULL, yyy=NULL, tol=.Machine$double.eps)
   {
     edges[[i]] <- NA
     if(isSymmetric){
-      edges[[i]] <- which(abs(X[i,i:ncol(X)]) > tol) + i -1
+      edges[[i]] <- which(abs(X[i,i:ncol(X)]) > eps) + i -1
     }else{
-      edges[[i]]  <- xxx[which(abs(X[i, ]) > tol)]
+      edges[[i]]  <- xxx[which(abs(X[i, ]) > eps)]
     }
   }
 
@@ -477,7 +478,7 @@ get_net <- function(X, K=NULL, xxx=NULL, yyy=NULL, tol=.Machine$double.eps)
   |    ._____| | | |       ._____| | .__| |__.     Marco Lopez-Cruz       |
   |    |_______| |_|       |_______| |_______|     Gustavo de los Campos  |
   |                                                                       |
-  |    Sparse Family and Selection Index. Version 1.1.0 (Feb 24, 2022)    |
+  |    Sparse Family and Selection Index. Version 1.1.0 (Mar 08, 2022)    |
   |    Type 'citation('SFSI')' to know how to cite SFSI                   |
   |    Type 'help(package='SFSI',help_type='html')' to see help           |
   |    Type 'browseVignettes('SFSI')' to see documentation                |

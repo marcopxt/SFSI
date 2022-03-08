@@ -3,7 +3,8 @@
 
 # Z=NULL; K=NULL; tst=NULL; main=NULL; cor.max=0.85
 
-path.plot <- function(object, Z=NULL, K=NULL, tst=NULL, cor.max=0.85, nbreaks.x=6, ...)
+path.plot <- function(object, Z = NULL, K = NULL, tst = NULL,
+  cor.max = 0.85, nbreaks.x = 6, ...)
 {
   k <- NULL
   flagKinship <- FALSE
@@ -41,10 +42,10 @@ path.plot <- function(object, Z=NULL, K=NULL, tst=NULL, cor.max=0.85, nbreaks.x=
       }
       if(!is.null(Z))
       {
-        if(length(dim(Z)) != 2) stop("Object 'Z' must be a matrix")
+        if(length(dim(Z)) != 2L) stop("Object 'Z' must be a matrix")
         K <- float::tcrossprod(Z,float::tcrossprod(Z,K))  # G = ZKZ'
       }
-      if(length(dim(K))!=2 | (length(K) != length(object$y)^2))
+      if(length(dim(K)) != 2L | (length(K) != length(object$y)^2))
         stop("Product Z %*% K %*% t(Z) must be a squared matrix with number of rows (and columns) equal to the number of elements in 'y'")
     }
 

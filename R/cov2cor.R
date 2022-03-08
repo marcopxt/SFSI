@@ -1,7 +1,7 @@
 
 # Covariance matrix to correlation matrix
 
-cov2cor2 <- function(V, a=1, void=FALSE)
+cov2cor2 <- function(V, a = 1, void = FALSE)
 {
     if((sum(dim(V))/2)^2 != length(V)) stop("Object 'V' must be a squared matrix")
     if(!float::storage.mode(V) %in% c("double","float32")) storage.mode(V) <- "double"

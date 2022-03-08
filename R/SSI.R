@@ -34,23 +34,23 @@ SSI <- function(y, X = NULL, b = NULL, Z = NULL, K, D = NULL,
   {
     X <- model.matrix(~1,data=data.frame(rep(1,n)))
   }else{
-    if(length(dim(X))<2){
+    if(length(dim(X)) < 2L){
       X <- stats::model.matrix(~X)
-      if(ncol(X)>2)  colnames(X)[-1] <- substr(colnames(X)[-1],2,nchar(colnames(X)[-1]))
+      if(ncol(X) > 2L)  colnames(X)[-1] <- substr(colnames(X)[-1],2,nchar(colnames(X)[-1]))
     }
   }
 
   if(!is.null(Z)){
-    if(length(dim(Z))!=2) stop("Object 'Z' must be a matrix with nrow(Z)=n and ncol(Z)=nrow(K)\n")
+    if(length(dim(Z)) != 2L) stop("Object 'Z' must be a matrix with nrow(Z)=n and ncol(Z)=nrow(K)\n")
     K <- float::tcrossprod(Z,float::tcrossprod(Z,K))   # Z%*%K%*%t(Z)
   }
 
-  if(length(dim(K))!=2 | (length(K) != n^2)){
+  if(length(dim(K)) != 2L | (length(K) != n^2)){
     stop("Product Z %*% K %*% t(Z) must be a squared matrix with number of rows",
      "\n(and columns) equal to n: number of elements in 'y'")
   }
   id <- NULL
-  if(length(dimnames(K)) == 2) id <- rownames(K)
+  if(has_names(K)) id <- rownames(K)
   dimnames(K) <- NULL
 
   if(!is.null(D)){

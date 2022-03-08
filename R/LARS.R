@@ -1,6 +1,6 @@
 
-LARS <- function(Sigma, Gamma, method=c("LAR","LAR-LASSO"), dfmax=NULL,
-    eps=.Machine$double.eps, scale=TRUE, verbose=FALSE)
+LARS <- function(Sigma, Gamma, method=c("LAR","LAR-LASSO"), dfmax = NULL,
+    eps = .Machine$double.eps, scale = TRUE, verbose = FALSE)
 {
   method <- match.arg(method)
 

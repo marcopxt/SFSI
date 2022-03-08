@@ -1,7 +1,7 @@
 #====================================================================
 # Plot the top 2 PCs of the K matrix showing tst and trn points
 #====================================================================
-# Z = NULL; K=G2; group = group.shape = set.color = set.size = tst= df=NULL; tol=.Machine$double.eps
+# Z = NULL; K=R0; group = group.shape = set.color = set.size = tst= df=NULL; eps=.Machine$double.eps
 # axis.labels = TRUE; curve = FALSE; bg.color = "white"; unified = TRUE; ntst = 36;
 # line.color = "gray90"; line.tick = 0.3; legend.pos="right"; show.names = TRUE
 # point.color = "gray20"; sets = c("Testing","Supporting","Non-active")
@@ -11,23 +11,22 @@ net.plot <- function(object, Z = NULL, K = NULL, tst = NULL,
            set.color = NULL, set.size = NULL, df = NULL, main,
            axis.labels = TRUE, curve = FALSE, bg.color = "white",
            unified = TRUE, ntst = 36, line.color = "gray80",
-           line.tick = 0.3, legend.pos="right", point.color = "gray20",
-           sets = c("Testing","Supporting","Non-active"), tol = NULL)
+           line.tick = 0.3, legend.pos = "right", point.color = "gray20",
+           sets = c("Testing","Supporting","Non-active"),
+           eps = .Machine$double.eps)
 {
   set <- set_name <- label <- x <- y <- x_TRN <- x_TST <- y_TRN <- y_TST <- NULL
   xxx <- yyy <- isEigen <- NULL
   legend.pos <- match.arg(legend.pos,
     choices=c("right","bottomright","bottomleft","topleft","topright","none"))
 
-  if(is.null(tol))  tol <- .Machine$double.eps
-
   if(!is.null(K)){
     if(is.character(K))  K <- readBinary(K)
-    if(length(dim(K)) != 2 | (length(K) != nrow(K)^2)) {
+    if(length(dim(K)) != 2L | (length(K) != nrow(K)^2)) {
         stop("Input 'K' must be a squared matrix")
     }
     if(!is.null(Z)) {
-      if(length(dim(Z)) != 2) stop("Object 'Z' must be a matrix with ncol(Z)=nrow(K)\n")
+      if(length(dim(Z)) != 2L) stop("Object 'Z' must be a matrix with ncol(Z)=nrow(K)\n")
       K <- float::tcrossprod(Z,float::tcrossprod(Z,K))   # Z%*%K%*%t(Z)
     }
   }
@@ -87,7 +86,7 @@ net.plot <- function(object, Z = NULL, K = NULL, tst = NULL,
     }
   }
 
-  net <- get_net(X, K=K, xxx=xxx, yyy=yyy, tol=tol)
+  net <- get_net(X, K=K, xxx=xxx, yyy=yyy, eps=eps)
   isSymmetric <- net$isSymmetric
   labelsAxis <- net$labelsAxis
   xxx <- net$xxx

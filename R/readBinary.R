@@ -19,7 +19,7 @@ readBinary <- function(file = paste0(tempdir(),"/file.bin"),
   isFloat <- X[[4]]
   nError <- X[[5]]
 
-  if(nError==0){
+  if(nError == 0L){
     if(isFloat | size==4){
       X <- float::float32(X[[6]])
       type <- "float"
