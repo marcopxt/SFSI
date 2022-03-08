@@ -8,7 +8,8 @@ net.plot(object, Z = NULL, K = NULL, tst = NULL,
         axis.labels = TRUE, curve = FALSE, bg.color = "white",
         unified = TRUE, ntst = 36, line.color = "gray80", 
         line.tick = 0.3, legend.pos="right", point.color = "gray20",
-        sets = c("Testing","Supporting","Non-active"), tol = NULL)
+        sets = c("Testing","Supporting","Non-active"), 
+        eps = .Machine$double.eps)
 }
 \arguments{
 \item{object}{An object of the 'SSI' class or a matrix of coefficients}
@@ -53,7 +54,7 @@ net.plot(object, Z = NULL, K = NULL, tst = NULL,
 
 \item{sets}{(character vector) Names of the types of node: row, 'active' column, and 'non-active' column, respectively}
 
-\item{tol}{(numeric) Minumum value to declare nodes to be connected. Default \code{tol=NULL} will set this value to zero}
+\item{eps}{(numeric) Minumum value to declare nodes to be connected. Default is the machine precision (numerical zero)}
 }
 \value{
 Returns the top-2 PC's plot connecting testing (predicted) individuals with training (predictors) individuals

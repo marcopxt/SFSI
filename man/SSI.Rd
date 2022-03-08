@@ -109,7 +109,7 @@ An optimal penalization can be chosen using cross-validation (CV) within a speci
 \details{
 The basic linear mixed model that relates phenotypes with genetic values is of the form
 
-\ifelse{html}{\out{<div style='text-align:center'><b>y</b> = <b>X b</b> + <b>Z g</b> + <b>e</b></div>}}{\deqn{\textbf{y}=\textbf{X}\textbf{b}+\textbf{Z}\textbf{g}+\textbf{e}}{y = X b + Z g + e}}
+\ifelse{html}{\out{<p style='text-align:center'><b>y</b> = <b>X b</b> + <b>Z g</b> + <b>e</b></p>}}{\deqn{\textbf{y}=\textbf{X}\textbf{b}+\textbf{Z}\textbf{g}+\textbf{e}}{y = X b + Z g + e}}
 
 where
 \ifelse{html}{\out{<b>y</b>}}{\eqn{\textbf{y}}{y}} is a vector with the response,
@@ -131,12 +131,12 @@ In the un-replicated case, \ifelse{html}{\out{<b>Z</b> = <b>I</b>}}{\eqn{\textbf
 The values \ifelse{html}{\out{<b>u</b><sub>tst</sub> = (u<sub>i</sub>)}}{\eqn{\textbf{u}_{tst}=(u_i)}{u_tst = (u_i)}},
 \ifelse{html}{\out{i = 1,2,...,n<sub>tst</sub>}}{\eqn{i=1,2,...,n_{tst}}{i = 1,2,...,n_tst}}, for a testing set are estimated individual-wise using (as predictors) all available observations in a training set as
 
-\ifelse{html}{\out{<div style='text-align:center'>u<sub>i</sub> = <b>&beta;</b>'<sub>i</sub> (<b>y</b><sub>trn</sub> - <b>X</b><sub>trn</sub><b>b</b>)</div>}}{\deqn{u_i=\boldsymbol{\beta}'_i(\textbf{y}_{trn}-\textbf{X}_{trn}\textbf{b})}{u_i = beta'_i (y_trn - X_trn*b)}}
+\ifelse{html}{\out{<p style='text-align:center'>u<sub>i</sub> = <b>&beta;</b>'<sub>i</sub> (<b>y</b><sub>trn</sub> - <b>X</b><sub>trn</sub><b>b</b>)</p>}}{\deqn{u_i=\boldsymbol{\beta}'_i(\textbf{y}_{trn}-\textbf{X}_{trn}\textbf{b})}{u_i = beta'_i (y_trn - X_trn*b)}}
 
 where \ifelse{html}{\out{<b>&beta;</b><sub>i</sub>}}{\eqn{\boldsymbol{\beta}_i}{beta_i}}
 is a vector of weights that are found separately for each individual in the testing set, by minimizing the penalized mean squared error function
 
-\ifelse{html}{\out{<div style='text-align:center'>-<b>G</b>'<sub>trn,tst(i)</sub> <b>&beta;</b><sub>i</sub> + 1/2 <b>&beta;</b>'<sub>i</sub>(<b>G</b><sub>trn</sub> + &theta;<b>D</b>)<b>&beta;</b><sub>i</sub> + &lambda; J(<b>&beta;</b><sub>i</sub>)</div>}}{\deqn{-\textbf{G}_{trn,tst(i)}' \boldsymbol{\beta}_i + 1/2 \boldsymbol{\beta}_i'(\textbf{G}_{trn} + \theta\textbf{D}) \boldsymbol{\beta}_i + \lambda J(\boldsymbol{\beta}_i)}{-G'[trn,tst(i)] beta_i + 1/2 beta_i'(G[trn] + theta D)beta_i + lambda J(beta_i)}}
+\ifelse{html}{\out{<p style='text-align:center'>-<b>G</b>'<sub>trn,tst(i)</sub> <b>&beta;</b><sub>i</sub> + 1/2 <b>&beta;</b>'<sub>i</sub>(<b>G</b><sub>trn</sub> + &theta;<b>D</b>)<b>&beta;</b><sub>i</sub> + &lambda; J(<b>&beta;</b><sub>i</sub>)</p>}}{\deqn{-\textbf{G}_{trn,tst(i)}' \boldsymbol{\beta}_i + 1/2 \boldsymbol{\beta}_i'(\textbf{G}_{trn} + \theta\textbf{D}) \boldsymbol{\beta}_i + \lambda J(\boldsymbol{\beta}_i)}{-G'[trn,tst(i)] beta_i + 1/2 beta_i'(G[trn] + theta D)beta_i + lambda J(beta_i)}}
 
 where
 \ifelse{html}{\out{<b>G</b><sub>trn,tst(i)</sub>}}{\eqn{\textbf{G}_{trn,tst(i)}}{G[trn,tst(i)}}
@@ -146,7 +146,7 @@ sub-matrix of \ifelse{html}{\out{<b>G</b>}}{\eqn{\textbf{G}}{G}} whose rows corr
 is the sub-matrix corresponding to the training set; \ifelse{html}{\out{&theta; = &sigma;<sup>2</sup><sub>e</sub>/&sigma;<sup>2</sup><sub>u</sub>}}{\eqn{\theta=\sigma^2_e/\sigma^2_u}{theta = sigma^e/sigma^2_u}} is the residual to genetic variance ratio that can be expressed in terms of the heritability, \ifelse{html}{\out{h<sup>2</sup> = &sigma;<sup>2</sup><sub>u</sub>/(&sigma;<sup>2</sup><sub>u</sub> + &sigma;<sup>2</sup><sub>e</sub>)}}{\eqn{h^2=\sigma^2_u/(\sigma^2_u+\sigma^2_e)}{h^2 = sigma^2_u/(sigma^2_u + sigma^2_e)}}, as \ifelse{html}{\out{&theta; = (1 - h<sup>2</sup>)/h<sup>2</sup>}}{\eqn{\theta=(1-h^2)/h^2}{theta = (1 - h^2)/h^2}}; \ifelse{html}{\out{&lambda;}}{\eqn{\lambda}{lambda}} is the penalization parameter; and
 \ifelse{html}{\out{J(<b>&beta;</b><sub>i</sub>)}}{\eqn{J(\boldsymbol{\beta}_i)}{J(beta_i)}}
 is a penalty function given by
-\ifelse{html}{\out{<div style='text-align:center'>1/2(1-&alpha;)||<b>&beta;</b><sub>i</sub>||<sub>2</sub><sup>2</sup> + &alpha;||<b>&beta;</b><sub>i</sub>||<sub>1</sub></div>}}{\deqn{1/2(1-\alpha)||\boldsymbol{\beta}_i||_2^2 + \alpha||\boldsymbol{\beta}_i||_1}{1/2(1-alpha)||beta_i||_2^2 + alpha||beta_i||_1}}
+\ifelse{html}{\out{<p style='text-align:center'>1/2(1-&alpha;)||<b>&beta;</b><sub>i</sub>||<sub>2</sub><sup>2</sup> + &alpha;||<b>&beta;</b><sub>i</sub>||<sub>1</sub></p>}}{\deqn{1/2(1-\alpha)||\boldsymbol{\beta}_i||_2^2 + \alpha||\boldsymbol{\beta}_i||_1}{1/2(1-alpha)||beta_i||_2^2 + alpha||beta_i||_1}}
 
 where \ifelse{html}{\out{0 &le; &alpha; &le; 1}}{\eqn{0\leq\alpha\leq 1}{0 <= alpha <= 1}}, and
 \ifelse{html}{\out{||<b>&beta;</b><sub>i</sub>||<sub>1</sub> = &sum;<sub>j=1</sub>|&beta;<sub>ij</sub>|}}{\eqn{||\boldsymbol{\beta}_i||_1=\sum_{j=1}^{n_{trn}}|\beta_{ij}|}{||beta_i||_1 = sum(|beta_ij|)}} and

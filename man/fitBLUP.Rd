@@ -55,7 +55,7 @@ Solves the Linear Mixed Model and calculates the Best Linear Unbiased Predictor 
 \details{
 The basic linear mixed model that relates phenotypes with genetic values is of the form
 
-\ifelse{html}{\out{<div style='text-align:center'><b>y</b> = <b>X b</b> + <b>Z u</b> + <b>e</b></div>}}{\deqn{\textbf{y}=\textbf{X}\textbf{b}+\textbf{Z}\textbf{u}+\textbf{e}}{y = X b + Z u + e}}
+\ifelse{html}{\out{<p style='text-align:center'><b>y</b> = <b>X b</b> + <b>Z u</b> + <b>e</b></p>}}{\deqn{\textbf{y}=\textbf{X}\textbf{b}+\textbf{Z}\textbf{u}+\textbf{e}}{y = X b + Z u + e}}
 
 where
 \ifelse{html}{\out{<b>y</b>}}{\eqn{\textbf{y}}{y}} is a vector with the response,
@@ -77,17 +77,17 @@ In the un-replicated case, \ifelse{html}{\out{<b>Z</b> = <b>I</b>}}{\eqn{\textbf
 The predicted values \ifelse{html}{\out{<b>u</b><sub>trn</sub> = (u<sub>i</sub>)}}{\eqn{\textbf{u}_{trn}=(u_i)}{u_trn = (u_i)}},
 \ifelse{html}{\out{i = 1,2,...,n<sub>trn</sub>}}{\eqn{i=1,2,...,n_{trn}}{i = 1,2,...,n_trn}}, corresponding to observed data (training set) are derived as
 
-\ifelse{html}{\out{<div style='text-align:center'><b>u</b><sub>trn</sub> = <b>H</b> (<b>y</b><sub>trn</sub> - <b>X</b><sub>trn</sub><b>b</b>)</div>}}{\deqn{\textbf{u}_{tst}=\textbf{H}(\textbf{y}_{trn}-\textbf{X}_{trn}\textbf{b})}{u_tst = H (y_trn - X_trn*b)}}
+\ifelse{html}{\out{<p style='text-align:center'><b>u</b><sub>trn</sub> = <b>H</b> (<b>y</b><sub>trn</sub> - <b>X</b><sub>trn</sub><b>b</b>)</p>}}{\deqn{\textbf{u}_{tst}=\textbf{H}(\textbf{y}_{trn}-\textbf{X}_{trn}\textbf{b})}{u_tst = H (y_trn - X_trn*b)}}
 
 where \ifelse{html}{\out{<b>H</b>}}{\eqn{\textbf{H}}{H}}
 is a matrix of weights given by
-\ifelse{html}{\out{<div style='text-align:center'><b>H</b> = <b>G</b><sub>trn</sub> (<b>G</b><sub>trn</sub> + &theta;<b>D</b>)<sup>-1</sup></div>}}{\deqn{\textbf{H}=\textbf{G}_{trn}(\textbf{G}_{trn} + \theta\textbf{D})^{-1}}{H = G[trn](G[trn] + theta D)^-1}}
+\ifelse{html}{\out{<p style='text-align:center'><b>H</b> = <b>G</b><sub>trn</sub> (<b>G</b><sub>trn</sub> + &theta;<b>D</b>)<sup>-1</sup></p>}}{\deqn{\textbf{H}=\textbf{G}_{trn}(\textbf{G}_{trn} + \theta\textbf{D})^{-1}}{H = G[trn](G[trn] + theta D)^-1}}
 
 where \ifelse{html}{\out{<b>G</b><sub>trn</sub>}}{\eqn{\textbf{G}_{trn}}{G[trn]}}
 is the sub-matrix corresponding to the training set, and \ifelse{html}{\out{&theta; = &sigma;<sup>2</sup><sub>e</sub>/&sigma;<sup>2</sup><sub>u</sub>}}{\eqn{\theta=\sigma_e^2/\sigma_u^2}{theta = sigma^2_e/sigma^2_u}} is the residual/genetic variances ratio representing a shrinkage parameter. This parameter is expressed in terms of the heritability, \ifelse{html}{\out{h<sup>2</sup> = &sigma;<sup>2</sup><sub>u</sub>/(&sigma;<sup>2</sup><sub>u</sub> + &sigma;<sup>2</sup><sub>e</sub>)}}{\eqn{h^2=\sigma^2_u/(\sigma^2_u+\sigma^2_e)}{h^2 = sigma^2_u/(sigma^2_u + sigma^2_e)}}, as \ifelse{html}{\out{&theta; = (1 - h<sup>2</sup>)/h<sup>2</sup>}}{\eqn{\theta=(1-h^2)/h^2}{theta = (1 - h^2)/h^2}}.
 
 The predictions of \ifelse{html}{\out{<b>u</b><sub>tst</sub>}}{\eqn{\textbf{u}_{tst}}{u_tst}} corresponding to un-observed data (testing set) can be obtained by using 
-\ifelse{html}{\out{<div style='text-align:center'><b>H</b> = <b>G</b><sub>tst,trn</sub> (<b>G</b><sub>trn</sub> + &theta;<b>D</b>)<sup>-1</sup></div>}}{\deqn{\textbf{H}=\textbf{G}_{tst,trn}(\textbf{G}_{trn} + \theta\textbf{D})^{-1}}{H = G[tst,trn](G[trn] + theta D)^-1}}
+\ifelse{html}{\out{<p style='text-align:center'><b>H</b> = <b>G</b><sub>tst,trn</sub> (<b>G</b><sub>trn</sub> + &theta;<b>D</b>)<sup>-1</sup></p>}}{\deqn{\textbf{H}=\textbf{G}_{tst,trn}(\textbf{G}_{trn} + \theta\textbf{D})^{-1}}{H = G[tst,trn](G[trn] + theta D)^-1}}
 
 where
 \ifelse{html}{\out{<b>G</b><sub>tst,trn</sub>}}{\eqn{\textbf{G}_{tst,trn}}{G[tst,trn]}}
