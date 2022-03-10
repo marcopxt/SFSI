@@ -44,6 +44,7 @@ a variance matrix among predictors and a covariance vector between response and 
 }
 \details{
 Finds solutions for the regression coefficients in a linear model
+
 \ifelse{html}{\out{<p style='text-align:center'>y<sub>i</sub> = <b>x</b>'<sub>i</sub> <b>&beta;</b> + e<sub>i</sub></p>}}{\deqn{y_i=\textbf{x}_i'\boldsymbol{\beta}+e_i}{y_i = x'_i beta + e_i}}
 
 where

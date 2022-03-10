@@ -81,12 +81,14 @@ The predicted values \ifelse{html}{\out{<b>u</b><sub>trn</sub> = (u<sub>i</sub>)
 
 where \ifelse{html}{\out{<b>H</b>}}{\eqn{\textbf{H}}{H}}
 is a matrix of weights given by
+
 \ifelse{html}{\out{<p style='text-align:center'><b>H</b> = <b>G</b><sub>trn</sub> (<b>G</b><sub>trn</sub> + &theta;<b>D</b>)<sup>-1</sup></p>}}{\deqn{\textbf{H}=\textbf{G}_{trn}(\textbf{G}_{trn} + \theta\textbf{D})^{-1}}{H = G[trn](G[trn] + theta D)^-1}}
 
 where \ifelse{html}{\out{<b>G</b><sub>trn</sub>}}{\eqn{\textbf{G}_{trn}}{G[trn]}}
 is the sub-matrix corresponding to the training set, and \ifelse{html}{\out{&theta; = &sigma;<sup>2</sup><sub>e</sub>/&sigma;<sup>2</sup><sub>u</sub>}}{\eqn{\theta=\sigma_e^2/\sigma_u^2}{theta = sigma^2_e/sigma^2_u}} is the residual/genetic variances ratio representing a shrinkage parameter. This parameter is expressed in terms of the heritability, \ifelse{html}{\out{h<sup>2</sup> = &sigma;<sup>2</sup><sub>u</sub>/(&sigma;<sup>2</sup><sub>u</sub> + &sigma;<sup>2</sup><sub>e</sub>)}}{\eqn{h^2=\sigma^2_u/(\sigma^2_u+\sigma^2_e)}{h^2 = sigma^2_u/(sigma^2_u + sigma^2_e)}}, as \ifelse{html}{\out{&theta; = (1 - h<sup>2</sup>)/h<sup>2</sup>}}{\eqn{\theta=(1-h^2)/h^2}{theta = (1 - h^2)/h^2}}.
 
 The predictions of \ifelse{html}{\out{<b>u</b><sub>tst</sub>}}{\eqn{\textbf{u}_{tst}}{u_tst}} corresponding to un-observed data (testing set) can be obtained by using 
+
 \ifelse{html}{\out{<p style='text-align:center'><b>H</b> = <b>G</b><sub>tst,trn</sub> (<b>G</b><sub>trn</sub> + &theta;<b>D</b>)<sup>-1</sup></p>}}{\deqn{\textbf{H}=\textbf{G}_{tst,trn}(\textbf{G}_{trn} + \theta\textbf{D})^{-1}}{H = G[tst,trn](G[trn] + theta D)^-1}}
 
 where

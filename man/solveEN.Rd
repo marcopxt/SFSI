@@ -15,7 +15,9 @@ solveEN(Sigma, Gamma, alpha = 1, lambda = NULL,
 
 \item{lambda}{(numeric vector) Penalization parameter sequence. Default is \code{lambda=NULL}, in this case a decreasing grid of
 \code{'nlambda'} lambdas will be generated starting from a maximum equal to
+
 \ifelse{html}{\out{<p style='text-align:center;font-family:courier'>max(abs(Gamma)/alpha)</p>}}{\deqn{\code{max(abs(Gamma)/alpha)}}{max(abs(Gamma)/alpha)}}
+
 to a minimum equal to zero. If \code{alpha=0} the grid is generated starting from a maximum equal to 5}
 
 \item{nlambda}{(integer) Number of lambdas generated when \code{lambda=NULL}}
@@ -51,6 +53,7 @@ values of the penalization parameter, via the Coordinate Descent (CD) algorithm 
 }
 \details{
 Finds solutions for the regression coefficients in a linear model
+
 \ifelse{html}{\out{<p style='text-align:center'>y<sub>i</sub> = <b>x</b>'<sub>i</sub> <b>&beta;</b> + e<sub>i</sub></p>}}{\deqn{y_i=\textbf{x}_i'\boldsymbol{\beta}+e_i}{y_i = x'_i beta + e_i}}
 
 where
@@ -82,6 +85,7 @@ where \ifelse{html}{\out{0 &le; &alpha; &le; 1}}{\eqn{0\leq\alpha\leq 1}{0 <= al
 
 The "partial residual" excluding the contribution of the predictor
 \ifelse{html}{\out{x<sub>ij</sub>}}{\eqn{x_{ij}}{x_ij}} is
+
 \ifelse{html}{\out{<p style='text-align:center'>e<sub>i</sub><sup>(j)</sup> = y<sub>i</sub> - <b>x</b>'<sub>i</sub> <b>&beta;</b> + x<sub>ij</sub>&beta;<sub>j</sub></p>}}{\deqn{e_i^{(j)}=y_i-\textbf{x}_i'\boldsymbol{\beta}+x_{ij}\beta_j}{r_i = y_i - x'_i beta + x_ij beta_j}}
 
 then the ordinary least-squares (OLS) coefficient of

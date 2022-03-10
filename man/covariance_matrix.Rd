@@ -42,13 +42,15 @@ between the variables expressed in terms of cross-products is
 \ifelse{html}{\out{<p style='text-align:center'>d<sup>2</sup>(X<sub>i</sub>,X<sub>j</sub>) = <b>x</b>'<sub>i</sub><b>x</b><sub>i</sub> + <b>x</b>'<sub>j</sub><b>x</b><sub>j</sub> - 2<b>x</b>'<sub>i</sub><b>x</b><sub>j</sub></p>}}{\deqn{d^2(X_i,X_j) = \textbf{x}_i'\textbf{x}_i + \textbf{x}_j'\textbf{x}_j - 2\textbf{x}_i'\textbf{x}_j}{d^2(X_i,X_j) = x'_i x_i + x'_j x_j - 2x'_i x_j}}
 
 Therefore, the output (square) distance matrix will contain as off-diagonal entries
+
 \ifelse{html}{\out{<p style='text-align:center'>d<sup>2</sup>(X<sub>i</sub>,X<sub>j</sub>) = var(X<sub>i</sub>) + var(X<sub>j</sub>) - 2cov(X<sub>i</sub>,X<sub>j</sub>)</p>}}{\deqn{d^2(X_i,X_j) = var(X_i)+var(X_j)- 2cov(X_i,X_j)}{d^2(X_i,X_j) = var(X_i) + var(X_j) - 2cov(X_i,X_j)}}
 
 while in the diagonal, the distance between one variable with itself is
 \ifelse{html}{\out{d<sup>2</sup>(X<sub>i</sub>,X<sub>i</sub>) = 0}}{\eqn{d^2(X_i,X_i)=0}{d^2(X_i,X_i) = 0}}
 
 \ifelse{html}{\out{<b>Correlation.</b>}}{\eqn{\textbf{Correlation.}}{Correlation.}}
-The correlation between the variables is obtained from variances y covariances as
+The correlation between the variables is obtained from variances and covariances as
+
 \ifelse{html}{\out{<p style='text-align:center'>cor(X<sub>i</sub>,X<sub>j</sub>) = cov(X<sub>i</sub>,X<sub>j</sub>)/(sd(X<sub>i</sub>)sd(X<sub>j</sub>))</p>}}{\deqn{cor(X_i,X_j) = cov(X_i,X_j)/(sd(X_i)sd(X_j))}{cor(X_i,X_j) = cov(X_i,X_j)/(sd(X_i)sd(X_j))}}
 
 where \ifelse{html}{\out{sd(X<sub>i</sub>)=sqrt(var(X<sub>i</sub>))}}{\eqn{sd(X_i)=\sqrt{var(X_i)}}{sd(X_i) = sqrt(var(X_i))}}; while in the diagonal, the correlation between one variable with itself is
