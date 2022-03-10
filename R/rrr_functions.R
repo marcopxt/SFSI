@@ -478,7 +478,7 @@ get_net <- function(X, K = NULL, xxx = NULL, yyy = NULL, eps = .Machine$double.e
   |    ._____| | | |       ._____| | .__| |__.     Marco Lopez-Cruz       |
   |    |_______| |_|       |_______| |_______|     Gustavo de los Campos  |
   |                                                                       |
-  |    Sparse Family and Selection Index. Version 1.1.0 (Mar 08, 2022)    |
+  |    Sparse Family and Selection Index. Version 1.1.0 (Mar 10, 2022)    |
   |    Type 'citation('SFSI')' to know how to cite SFSI                   |
   |    Type 'help(package='SFSI',help_type='html')' to see help           |
   |    Type 'browseVignettes('SFSI')' to see documentation                |
