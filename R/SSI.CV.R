@@ -1,7 +1,7 @@
- #y=y; X = NULL; Z = D= NULL; K=G; b=NULL; h2 = NULL; trn = trn; alpha = 1;
- #lambda = NULL; nlambda = 100; lambda.min = .Machine$double.eps^0.5; nCV = 1; nfolds = 5;
- #seed = NULL; common.lambda = TRUE; method = c("REML","ML")[1]
- #mc.cores = 1; tol = 1E-4; maxiter = 500; name = NULL; verbose = TRUE
+ # y=y; X = NULL; Z = D= NULL; K=G; b=NULL; h2 = NULL; trn = trn; alpha = 1;
+ # lambda = NULL; nlambda = 100; lambda.min = .Machine$double.eps^0.5; nCV = 1; nfolds = 5;
+ # seed = NULL; common.lambda = TRUE; method = c("REML","ML")[1]
+ # mc.cores = 1; tol = 1E-4; maxiter = 500; name = NULL; verbose = TRUE
 
 SSI.CV <- function(y, X = NULL, b = NULL, Z = NULL, K, D = NULL,
               theta = NULL, h2 = NULL, trn = seq_along(y), alpha = 1,
@@ -55,6 +55,8 @@ SSI.CV <- function(y, X = NULL, b = NULL, Z = NULL, K, D = NULL,
                      df=fv$df, lambda=fv$lambda, accuracy=fv$accuracy, MSE=fv$MSE)
       }
 
+      unlink(Sys.glob(paste0(fm$file_beta,"*.bin")))
+
       if(verbose){
         message("CV ",ifelse(isLOOCV,"LOO",k),": Fold ",ind,"/",nfolds," (n=",length(tst0),")")
       }
@@ -82,11 +84,10 @@ SSI.CV <- function(y, X = NULL, b = NULL, Z = NULL, K, D = NULL,
         folds <- sample(folds)
       }
 
-      if(mc.cores == 1L | !isLOOCV){
-        out = lapply(X=seq(nfolds),FUN=compApply)
-      }
       if(mc.cores > 1L & isLOOCV){
         out = parallel::mclapply(X=seq(nfolds),FUN=compApply,mc.cores=mc.cores)
+      }else{
+        out = lapply(X=seq(nfolds),FUN=compApply)
       }
 
       tmp <- do.call(rbind,split(data.frame(trn,folds),folds))[,1]
